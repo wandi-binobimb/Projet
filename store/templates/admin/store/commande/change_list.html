@@ -1,0 +1,14 @@
+{% extends "admin/change_list.html" %}
+{% load i18n static %}
+
+{% block object-tools %}
+    {{ block.super }}
+    <form method="post" action="" style="display:inline;">
+        {% csrf_token %}
+        <button type="submit"
+                class="button"
+                style="background-color:#4CAF50;color:white;border:none;padding:8px 16px;border-radius:6px;cursor:pointer;margin-left:10px;">
+            💾 حفظ التغييرات
+        </button>
+    </form>
+{% endblock %}

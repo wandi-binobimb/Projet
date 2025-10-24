@@ -1,0 +1,877 @@
+<!DOCTYPE html>
+{% load static %}
+
+<html lang="en" xmlns="http://www.w3.org/1999/html">
+<head>
+	<title>Shoping Cart</title>
+
+</head>
+<body class="animsition">
+<script>
+function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== "") {
+      const cookies = document.cookie.split(";");
+      for (let i = 0; i < cookies.length; i++) {
+        const cookie = cookies[i].trim();
+        if (cookie.substring(0, name.length + 1) === name + "=") {
+          cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+          break;
+        }
+      }
+    }
+    return cookieValue;
+  }
+  </script>
+	<!-- Header -->
+	{% include "store/partials/entete.html" %}
+
+<br> <br> <br> <br>  <br> <br>
+	<!-- breadcrumb -->
+	<div class="container">
+		<div class="bread-crumb flex-w p-l-25 p-r-15 p-t-30 p-lr-0-lg">
+			<a href="{% url 'index' %}" class="stext-109 cl8 hov-cl1 trans-04">
+				Accueil
+				<i class="fa fa-angle-right m-l-9 m-r-10" aria-hidden="true"></i>
+			</a>
+
+			<span class="stext-109 cl4">
+				Mon Panier
+			</span>
+		</div>
+	</div>
+
+
+	<!-- Shoping Cart -->
+	<div class="bg0 p-t-75 p-b-85">
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-10 col-xl-7 m-lr-auto m-b-50">
+					<div class="m-l-25 m-r--38 m-lr-0-xl">
+						<div class="wrap-table-shopping-cart">
+							<table class="table-shopping-cart">
+								<tr class="table_head">
+									<th class="column-1">PRODUITS</th>
+									<th class="column-2"></th>
+									<th class="column-3">PRIX</th>
+									<th class="column-4">QUANTITÉ</th>
+									<th class="column-5">TOTAL</th>
+									<th class="column-5"></th>
+								</tr>
+
+							<tbody>
+								{% for item in produits_panier %}
+								<tr class="table_row">
+									<td class="colum-1">
+										<div class="how-itemcart1">
+											<img src="{{ item.couleur.images.first.image.url }}" alt="{{ item.produit.nom}}">
+										</div>
+									</td>
+
+									<td class="colum-2">{{ item.produit.categorie }} | {{ item.produit.nom }} <p>{{ item.taille}}</p></td>
+									<td class="colum-3">  {{item.produit.prix|floatformat:0}} DA </td>
+									<td class="column-4">
+									  <div style="display: flex; align-items: center; gap: 5px; justify-content: center;">
+										<button type="button" class="btn btn-light btn-decrease" data-id="{{ item.id }}">-</button>
+
+										<input type="number" class="quantity-input" data-id="{{ item.id }}"
+											   value="{{ item.quantite }}" min="1"
+											   style="width: 50px; text-align: center;">
+
+										<button type="button" class="btn btn-light btn-increase" data-id="{{ item.id }}">+</button>
+									  </div>
+									</td>
+
+
+
+
+
+
+
+
+
+
+									<td class="column-5 total-cell">
+									  <span class="total"></span>  DA
+									  <span style="display: none;" class="prix">{{ item.produit.prix }}</span>
+									  <span style="display: none;" class="quantite">{{ item.quantite }}</span>
+									</td>
+
+									<td class="column-6">
+									  <button type="button" class="btn btn-danger btn-sm btn-remove" data-id="{{ item.id }}" >
+										🗑️
+									  </button>
+									</td>
+
+
+
+
+								</tr>
+								{%empty%}
+								<tr><td colspan="5">السلة فارغة</td></tr>
+								{% endfor %}
+							</tbody>
+
+
+<!--								<tr class="table_row">-->
+<!--									<td class="column-1">-->
+<!--										<div class="how-itemcart1">-->
+<!--											<img src="{%static 'store/images/item-cart-04.jpg'%}" alt="IMG">-->
+<!--										</div>-->
+<!--									</td>-->
+<!--									<td class="column-2">Fresh Strawberries</td>-->
+<!--									<td class="column-3">$ 36.00</td>-->
+<!--									<td class="column-4">-->
+<!--										<div class="wrap-num-product flex-w m-l-auto m-r-0">-->
+<!--											<div class="btn-num-product-down cl8 hov-btn3 trans-04 flex-c-m">-->
+<!--												<i class="fs-16 zmdi zmdi-minus"></i>-->
+<!--											</div>-->
+
+<!--											<input class="mtext-104 cl3 txt-center num-product" type="number" name="num-product1" value="1">-->
+
+<!--											<div class="btn-num-product-up cl8 hov-btn3 trans-04 flex-c-m">-->
+<!--												<i class="fs-16 zmdi zmdi-plus"></i>-->
+<!--											</div>-->
+<!--										</div>-->
+<!--									</td>-->
+<!--									<td class="column-5">$ 36.00</td>-->
+<!--								</tr>-->
+
+<!--								<tr class="table_row">-->
+<!--									<td class="column-1">-->
+<!--										<div class="how-itemcart1">-->
+<!--											<img src="{%static 'store/images/item-cart-05.jpg'%}" alt="IMG">-->
+<!--										</div>-->
+<!--									</td>-->
+<!--									<td class="column-2">Lightweight Jacket</td>-->
+<!--									<td class="column-3">$ 16.00</td>-->
+<!--									<td class="column-4">-->
+<!--										<div class="wrap-num-product flex-w m-l-auto m-r-0">-->
+<!--											<div class="btn-num-product-down cl8 hov-btn3 trans-04 flex-c-m">-->
+<!--												<i class="fs-16 zmdi zmdi-minus"></i>-->
+<!--											</div>-->
+
+<!--											<input class="mtext-104 cl3 txt-center num-product" type="number" name="num-product2" value="1">-->
+
+<!--											<div class="btn-num-product-up cl8 hov-btn3 trans-04 flex-c-m">-->
+<!--												<i class="fs-16 zmdi zmdi-plus"></i>-->
+<!--											</div>-->
+<!--										</div>-->
+<!--									</td>-->
+<!--									<td class="column-5">$ 16.00</td>-->
+<!--								</tr>-->
+							</table>
+						</div>
+
+<!--						<div class="flex-w flex-sb-m bor15 p-t-18 p-b-15 p-lr-40 p-lr-15-sm">-->
+<!--							<div class="flex-w flex-m m-r-20 m-tb-5">-->
+<!--								<input class="stext-104 cl2 plh4 size-117 bor13 p-lr-20 m-r-10 m-tb-5" type="text" name="coupon" placeholder="Coupon Code">-->
+
+<!--								<div class="flex-c-m stext-101 cl2 size-118 bg8 bor13 hov-btn3 p-lr-15 trans-04 pointer m-tb-5">-->
+<!--									Apply coupon-->
+<!--								</div>-->
+<!--							</div>-->
+
+<!--							<div class="flex-c-m stext-101 cl2 size-119 bg8 bor13 hov-btn3 p-lr-15 trans-04 pointer m-tb-10">-->
+<!--								Update Cart-->
+<!--							</div>-->
+<!--						</div>-->
+					</div>
+				</div>
+
+				<div class="col-sm-10 col-lg-7 col-xl-5 m-lr-auto m-b-50">
+					<div class="bor10 p-lr-40 p-t-30 p-b-40 m-l-63 m-r-40 m-lr-0-xl p-lr-15-sm">
+						<h4 class="mtext-109 cl2 p-b-30">
+							TOTAL DU PANIER
+						</h4>
+
+						<div class="flex-w flex-t bor12 p-b-13">
+							<div class="size-208">
+								<span class="stext-110 cl2">
+									Sous-total:
+								</span>
+							</div>
+
+							<div class="size-209">
+								<span class="mtext-110 cl2" id="prix-produits" >
+									{{ total_produits }} DA
+								</span>
+							</div>
+						</div>
+
+						<div class="flex-w flex-t bor12 p-t-15 p-b-30">
+<!--							<div class="size-208 w-full-ssm">-->
+<!--								<span class="stext-110 cl2">-->
+<!--									Total avec :-->
+<!--								</span>-->
+<!--							</div>-->
+
+<!--							<div class="size-209 p-r-18 p-r-0-sm w-full-ssm">-->
+<!--								<p class="stext-111 cl6 p-t-2">-->
+<!--									There are no shipping methods available. Please double check your address, or contact us if you need any help.-->
+<!--								</p>-->
+
+								<div class="p-t-15">
+<!--									<span class="stext-112 cl8">-->
+<!--										Total avec livraison-->
+<!--									</span>-->
+
+									<h4>Vos coordonnées</h4>
+										<form id="commande-form" class="bg0 p-t-75 p-b-85">
+										  {% csrf_token %}
+
+										  <label>Nom complet :</label>
+										  <div class="bor8 m-b-20 how-pos4-parent">
+												<input class="stext-111 cl2 plh3 size-116 p-l-62 p-r-30"
+													   type="text" id="name" name="nom"
+													   placeholder="Votre nom"
+													   maxlength="25">
+												<span class="how-pos4 pointer-none fs-18 cl6">
+													<i class="zmdi zmdi-account"></i>
+												</span>
+											</div>
+
+
+										  <label>Numéro de téléphone :</label>
+										  <div class="bor8 m-b-20 how-pos4-parent">
+											<input class="stext-111 cl2 plh3 size-116 p-l-62 p-r-30"
+												   type="text" name="telephone" id="phone"
+												   placeholder="Votre téléphone"
+												   maxlength="10"
+												   pattern="0[0-9]{9}"
+												   oninput="
+													   // السماح فقط بالأرقام
+													   this.value = this.value.replace(/[^0-9]/g, '');
+													   // إذا لم يبدأ بـ 0، أضفه في البداية
+													   if (this.value.length > 0 && this.value[0] !== '0') {
+														   this.value = '0' + this.value.replace(/^0+/, '');
+													   }
+													   // لا تتجاوز 10 أرقام
+													   if (this.value.length > 10) {
+														   this.value = this.value.slice(0, 10);
+													   }
+												   ">
+											<span class="how-pos4 pointer-none fs-18 cl6">
+												<i class="zmdi zmdi-phone"></i>
+											</span>
+										</div>
+
+
+										  <label for="wilaya-select">Wilaya :</label>
+										  <select name="wilaya" id="wilaya-select" required class="custom-select">
+											<option value="" disabled selected>Choisissez votre wilaya</option>
+											{% for wilaya in wilayas %}
+											  <option value="{{ wilaya.id }}">{{ wilaya.nom }}</option>
+											{% endfor %}
+										  </select>
+
+										  <div id="livraison-options" style="display: none; margin-top: 10px;">
+											<label>Type de livraison</label><br>
+											<input type="radio" name="type_livraison" id="livraison_bureau" value="bureau" required>
+											<label for="livraison_bureau" id="label_bureau">Livraison au bureau</label><br>
+
+											<input type="radio" name="type_livraison" id="livraison_domicile" value="domicile" required>
+											<label for="livraison_domicile" id="label_domicile">Livraison a domicile</label>
+										  </div>
+
+										  <label>Commune :</label>
+										  <select id="commune-select" name="commune" required class="custom-select">
+											<option value="" disabled selected>Sélectionnez votre commune</option>
+										  </select>
+
+										  <div class="flex-w flex-t p-t-27 p-b-33">
+											<div class="size-208">
+											  <span class="mtext-101 cl2">Total:</span>
+											</div>
+											<div class="size-209 p-t-1">
+											  <span class="mtext-110 cl2" id="total_final">{{ total_final }}</span>
+											</div>
+										  </div>
+
+										  <button type="submit"
+												  class="flex-c-m stext-101 cl0 size-116 bg3 bor14 hov-btn3 p-lr-15 trans-04 pointer">
+											VALIDER LA COMMANDE
+										  </button>
+										</form>
+
+
+
+	</div>
+
+
+
+
+
+									<!--<div class="rs1-select2 rs2-select2 bor8 bg0 m-b-12 m-t-9">
+										<select class="js-select2" name="time">
+											<option>Select a country...</option>
+											<option>USA</option>
+											<option>UK</option>
+										</select>
+										<div class="dropDownSelect2"></div>
+									</div>-->
+
+									<!--<div class="bor8 bg0 m-b-12">
+										<input class="stext-111 cl8 plh3 size-111 p-lr-15" type="text" name="state" placeholder="State /  country">
+									</div>
+
+									<div class="bor8 bg0 m-b-22">
+										<input class="stext-111 cl8 plh3 size-111 p-lr-15" type="text" name="postcode" placeholder="Postcode / Zip">
+									</div>
+
+									<div class="flex-w">
+										<div class="flex-c-m stext-101 cl2 size-115 bg8 bor13 hov-btn3 p-lr-15 trans-04 pointer">
+											Update Totals
+										</div>
+									</div>-->
+
+								</div>
+							</div>
+						</div>
+
+
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+
+
+	<!-- Footer -->
+	{% include "store/partials/footer.html" %}
+
+	<!-- Back to top -->
+	<div class="btn-back-to-top" id="myBtn">
+		<span class="symbol-btn-back-to-top">
+			<i class="zmdi zmdi-chevron-up"></i>
+		</span>
+	</div>
+
+<!--===============================================================================================-->
+	<script src="{%static 'store/vendor/jquery/jquery-3.2.1.min.js'%}"></script>
+<!--===============================================================================================-->
+	<script src="{%static 'store/vendor/animsition/js/animsition.min.js'%}"></script>
+<!--===============================================================================================-->
+	<script src="{%static 'store/vendor/bootstrap/js/popper.js'%}"></script>
+	<script src="{%static 'store/vendor/bootstrap/js/bootstrap.min.js'%}"></script>
+<!--===============================================================================================-->
+	<script src="{%static 'store/vendor/select2/select2.min.js'%}"></script>
+	<script>
+		$(".js-select2").each(function(){
+			$(this).select2({
+				minimumResultsForSearch: 20,
+				dropdownParent: $(this).next('.dropDownSelect2')
+			});
+		})
+	</script>
+
+	<script src="{%static 'store/vendor/sweetalert/sweetalert.min.js' %}"></script>
+<!--===============================================================================================-->
+	<script src="{%static 'store/vendor/MagnificPopup/jquery.magnific-popup.min.js'%}"></script>
+<!--===============================================================================================-->
+	<script src="{%static 'store/vendor/perfect-scrollbar/perfect-scrollbar.min.js'%}"></script>
+	<script>
+		$('.js-pscroll').each(function(){
+			$(this).css('position','relative');
+			$(this).css('overflow','hidden');
+			var ps = new PerfectScrollbar(this, {
+				wheelSpeed: 1,
+				scrollingThreshold: 1000,
+				wheelPropagation: false,
+			});
+
+			$(window).on('resize', function(){
+				ps.update();
+			})
+		});
+	</script>
+<!--===============================================================================================-->
+	<script src="{%static 'store/js/main.js'%}"></script>
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+  const rows = document.querySelectorAll(".total-cell");
+
+  rows.forEach(row => {
+    const prix = parseFloat(row.querySelector(".prix").innerText);
+    const quantite = parseInt(row.querySelector(".quantite").innerText);
+    const total = prix * quantite;
+    row.querySelector(".total").innerText = total.toFixed(0);
+    row.querySelector(".prix").innerText=prix.toFixed(0);
+  });
+});
+</script>
+
+<script src="{% static 'store/jquery/jquery-3.6.0.min.js' %}"></script>
+
+
+<script>
+$(document).ready(function() {
+    $('#wilaya-select').on('change', function() {
+        const wilayaId = $(this).val();
+        if (wilayaId) {
+            $.ajax({
+                url: `/get_communes/${wilayaId}/`,
+                type: 'GET',
+                success: function(data) {
+                    let communeSelect = $('#commune-select');
+                    communeSelect.empty();
+                    communeSelect.val("");
+                    communeSelect.append('<option disabled selected>اختر البلدية</option>');
+
+                    // ✅ هنا نضيف البلديات
+                    if (data.communes.length > 0) {
+                        data.communes.forEach(function(commune) {
+                            communeSelect.append(`<option value="${commune.id}">${commune.nom}</option>`);
+                        });
+                    } else {
+                        communeSelect.append('<option value="" disabled>لا توجد بلديات</option>');
+                    }
+                },
+                error: function() {
+                    alert('⚠️ حدث خطأ أثناء تحميل البلديات');
+                }
+            });
+        }
+    });
+});
+</script>
+
+<!--<script>-->
+<!--$(document).ready(function () {-->
+<!--    $('#wilaya-select').on('change', function () {-->
+<!--        const wilayaId = $(this).val();-->
+<!--        if (wilayaId) {-->
+<!--            $.ajax({-->
+<!--                url: `/get_shipping_options/${wilayaId}/`,-->
+<!--                method: 'GET',-->
+<!--                success: function (data) {-->
+<!--                    if (data.bureau && data.domicile) {-->
+<!--                        $('#label_bureau').text(`توصيل للمكتب — ${data.bureau} دج`);-->
+<!--                        $('#label_domicile').text(`توصيل للمنزل — ${data.domicile} دج`);-->
+<!--                        $('#livraison-options').show();-->
+<!--                        updateTotal();-->
+<!--                    }-->
+<!--                },-->
+<!--                error: function () {-->
+<!--                    alert('تعذر جلب خيارات التوصيل');-->
+<!--                }-->
+<!--            });-->
+<!--        }-->
+<!--    });-->
+<!--});-->
+<!--</script>-->
+
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  const wilayaSelect = document.getElementById("wilaya-select");
+  const livraisonOptions = document.getElementById("livraison-options");
+  const livraisonRadios = document.querySelectorAll("input[name='type_livraison']");
+  const prixLivraison = document.getElementById("prix_livraison");
+
+
+  const totalFinal = document.getElementById("total_final");
+
+  // ✅ عند اختيار ولاية
+  wilayaSelect.addEventListener("change", function () {
+    const wilayaId = this.value;
+    fetch(`/get_shipping_options/${wilayaId}/`)
+      .then(res => res.json())
+      .then(data => {
+        livraisonOptions.style.display = 'block';
+        document.getElementById("label_bureau").textContent = `Livraison au bureau — ${data.bureau} DA`;
+        document.getElementById("label_domicile").textContent = `Livraison a domicile — ${data.domicile} DA`;
+        updateTotal(); // ✅ تحديث السعر عند عرض الخيارات
+      });
+  });
+
+  // ✅ عند تغيير نوع التوصيل
+  livraisonRadios.forEach(radio => {
+    radio.addEventListener("change", updateTotal);
+  });
+
+  // ✅ دالة لحساب السعر الإجمالي مع التوصيل
+  function updateTotal() {
+    const selectedType = document.querySelector("input[name='type_livraison']:checked");
+    const wilayaId = wilayaSelect.value;
+
+    // ✅ إعادة قراءة prix-produits لأن الكمية قد تكون تغيرت
+    const prixProduits = parseFloat(document.getElementById("prix-produits").textContent);
+
+    if (!selectedType || !wilayaId) return;
+
+    fetch(`/get_shipping_options/${wilayaId}/`)
+      .then(res => res.json())
+      .then(data => {
+        const frais = selectedType.value === "domicile"
+          ? parseFloat(data.domicile)
+          : parseFloat(data.bureau);
+
+        prixLivraison.textContent = frais;
+        totalFinal.textContent = (prixProduits + frais).toFixed(0);
+      });
+  }
+
+  // ✅ يمكننا استدعاء updateTotal عند كل تغيير كمية إذا أردت ربطه بذلك أيضًا
+});
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    const phoneInput = document.querySelector('input[name="telephone"]');
+
+    if (phoneInput) {
+        phoneInput.addEventListener("input", function () {
+            this.value = this.value.replace(/[^0-9]/g, '');  // يقبل فقط الأرقام
+        });
+    }
+});
+</script>
+
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+
+
+
+  function sendQuantityToServer(itemId, quantity) {
+    const wilayaSelect = document.getElementById("wilaya-select");
+    const selectedWilaya = wilayaSelect ? wilayaSelect.value : null;
+
+    const livraisonRadio = document.querySelector("input[name='type_livraison']:checked");
+    const selectedLivraison = livraisonRadio ? livraisonRadio.value : null;
+
+    const bodyData = new URLSearchParams();
+    bodyData.append("quantite", quantity);
+    if (selectedWilaya) bodyData.append("wilaya", selectedWilaya);
+    if (selectedLivraison) bodyData.append("type_livraison", selectedLivraison);
+
+    fetch(`/update_quantity/${itemId}/`, {
+        method: "POST",
+        headers: {
+            "X-CSRFToken": getCookie("csrftoken"),
+            "Content-Type": "application/x-www-form-urlencoded"
+        },
+        body: bodyData.toString()
+    })
+    .then(res => res.json())
+    .then(data => {
+        if (data.success) {
+            // تحديث السعر الجزئي
+            const row = document.querySelector(`.quantity-input[data-id="${itemId}"]`).closest("tr");
+            if (row) {
+              row.querySelector(".total").textContent = data.line_total;
+              row.querySelector(".quantite").textContent = data.quantite;
+            }
+
+            // تحديث مجموع المنتجات
+            document.getElementById("prix-produits").textContent = data.total_produits + " DA";
+
+            // تحديث السعر النهائي مع التوصيل
+            document.getElementById("total_final").textContent = data.total_final + " DA";
+        }
+    })
+    .catch(err => {
+        console.error("❌ خطأ في تحديث الكمية:", err);
+    });
+  }
+
+  // تغيير الكمية يدويًا
+  document.querySelectorAll(".quantity-input").forEach(input => {
+    input.addEventListener("change", function () {
+      const itemId = this.dataset.id;
+      const quantite = parseInt(this.value);
+      if (!isNaN(quantite) && itemId) {
+        sendQuantityToServer(itemId, quantite);
+      }
+    });
+  });
+
+  // زر +
+  document.querySelectorAll(".btn-increase").forEach(button => {
+    button.addEventListener("click", function () {
+      const itemId = this.dataset.id;
+      const input = document.querySelector(`.quantity-input[data-id="${itemId}"]`);
+      input.value = parseInt(input.value) + 1;
+      input.dispatchEvent(new Event('change'));
+    });
+  });
+
+  // زر -
+  document.querySelectorAll(".btn-decrease").forEach(button => {
+    button.addEventListener("click", function () {
+      const itemId = this.dataset.id;
+      const input = document.querySelector(`.quantity-input[data-id="${itemId}"]`);
+      const current = parseInt(input.value);
+      if (current > 1) {
+        input.value = current - 1;
+        input.dispatchEvent(new Event('change'));
+      }
+    });
+  });
+
+  // ✅ تحديث total_final عند تغيير نوع التوصيل
+  document.querySelectorAll("input[name='type_livraison']").forEach(radio => {
+    radio.addEventListener("change", function () {
+      const firstInput = document.querySelector(".quantity-input");
+      if (firstInput) {
+        sendQuantityToServer(firstInput.dataset.id, firstInput.value);
+      }
+    });
+  });
+
+  // ✅ تحديث total_final عند تغيير الولاية
+  const wilayaSelect = document.getElementById("wilaya-select");
+  if (wilayaSelect) {
+    wilayaSelect.addEventListener("change", function () {
+      const firstInput = document.querySelector(".quantity-input");
+      if (firstInput) {
+        sendQuantityToServer(firstInput.dataset.id, firstInput.value);
+      }
+    });
+  }
+
+});
+</script>
+
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  const form = document.getElementById("order-form");
+  const wilayaSelect = document.getElementById("wilaya-select");
+  const communeSelect = document.getElementById("commune-select");
+
+  if (form) {
+    form.addEventListener("submit", function (e) {
+      const wilayaValid = wilayaSelect.value !== "";
+      const communeValid = communeSelect.value !== "" && communeSelect.value !== null;
+
+      if (!wilayaValid || !communeValid) {
+        e.preventDefault(); // ⛔ منع الإرسال
+        alert("⚠️ يرجى اختيار الولاية والبلدية قبل تأكيد الطلب.");
+      }
+    });
+  }
+});
+</script>
+
+
+<style>
+.custom-select {
+    display: block;
+    width: 100%;
+    padding: 10px 12px;
+    font-size: 16px;
+    line-height: 1.5;
+    color: #333;
+    background-color: #fff;
+    background-clip: padding-box;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+
+.custom-select:focus {
+    border-color: #66afe9;
+    outline: 0;
+    box-shadow: 0 0 5px rgba(102, 175, 233, 0.6);
+}
+</style>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    const form = document.getElementById("commande-form");
+
+    if (form) {
+        form.addEventListener("submit", function (e) {
+            e.preventDefault(); // منع الإرسال العادي
+
+            const formData = new FormData(form);
+
+
+
+	// ✅ تحقق من الحقول قبل الإرسال
+	const nameInput = document.getElementById('name');
+	const phoneInput = document.getElementById('phone');
+	const wilayaSelect = document.getElementById('wilaya-select');
+	const communeSelect = document.getElementById('commune-select');
+
+	// تحقق من الاسم
+	if (!nameInput.value.trim()) {
+		swal("الرجاء إدخال الاسم", "", "warning");
+		nameInput.focus();
+		return;
+	}
+
+	// تحقق من رقم الهاتف
+	if (!phoneInput.value.trim()) {
+		swal("الرجاء إدخال رقم الهاتف", "", "warning");
+		phoneInput.focus();
+		return;
+	}
+
+	// تحقق من الولاية
+	if (!wilayaSelect.value || wilayaSelect.selectedIndex === 0) {
+		swal("الرجاء اختيار الولاية", "", "warning");
+		wilayaSelect.focus();
+		return;
+	}
+
+	// تحقق من البلدية
+	if (!communeSelect.value || communeSelect.selectedIndex === 0 || communeSelect.options.length === 0) {
+		swal("الرجاء اختيار البلدية", "", "warning");
+		communeSelect.focus();
+		return;
+	}
+
+            fetch("/confirmer_commande/", {
+                method: "POST",
+                body: formData
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data.success) {
+                    swal({
+                        title: "✅ Commande envoyée",
+                        text: data.message,
+                        icon: "success",
+                        button: "OK"
+                    }).then(() => {
+                        window.location.href = "/"; // بعد النجاح يرجع للصفحة الرئيسية
+                    });
+                } else {
+                    swal("⚠️ خطأ", data.error, "error");
+                }
+            })
+            .catch(() => {
+                swal("❌ خطأ", "تعذر الاتصال بالخادم", "error");
+            });
+        });
+    }
+});
+</script>
+
+
+<script>
+function updateCarts(data, itemId = null) {
+    // تحديث السلة الجانبية
+    if (itemId) {
+        const li = document.querySelector(`.remove-btn-sidebar[data-id='${itemId}']`)?.closest(".header-cart-item");
+        if (li) li.remove();
+
+        const cartCount = document.querySelector(".icon-header-noti");
+        if (cartCount) {
+            let current = parseInt(cartCount.getAttribute("data-notify")) || 0;
+            current = Math.max(0, current - 1);
+            cartCount.setAttribute("data-notify", current);
+        }
+    }
+
+    // تحديث المجموع في السلة الجانبية
+    const totalDiv = document.querySelector(".header-cart-total strong");
+    if (totalDiv) totalDiv.textContent = data.total_produits + " DA";
+
+    // إذا السلة صارت فارغة
+    if (document.querySelectorAll(".header-cart-item").length === 0) {
+        const emptyMsg = document.createElement("li");
+        emptyMsg.className = "header-cart-item m-b-12";
+        emptyMsg.innerHTML = '<span class="stext-101 cl6">PANIER VIDE 🛒</span>';
+        document.querySelector(".header-cart-buttons")?.insertAdjacentElement("beforebegin", emptyMsg);
+        document.querySelector(".header-cart-total")?.remove();
+    }
+
+    // تحديث السلة الكاملة
+    if (document.getElementById("prix-produits")) {
+        document.getElementById("prix-produits").textContent = data.total_produits + " DA";
+        document.getElementById("total_final").textContent = data.total_final + " DA";
+        if (itemId) {
+            const row = document.querySelector(`.btn-remove[data-id='${itemId}']`)?.closest("tr");
+            if (row) row.remove();
+        }
+    }
+}
+
+// دالة لإضافة حدث الحذف لكل الزرار مرة واحدة فقط
+function handleRemove(buttonSelector) {
+    document.querySelectorAll(buttonSelector).forEach(button => {
+        if (!button.dataset.listenerAdded) { // لمنع التكرار
+            button.dataset.listenerAdded = "true";
+            button.addEventListener("click", function(e) {
+                e.preventDefault();
+                if (!confirm("هل أنت متأكد أنك تريد إزالة هذا المنتج؟")) return;
+
+                const itemId = this.dataset.id;
+                const body = new URLSearchParams();
+
+                // إضافة معلومات التوصيل فقط للسلة الكاملة إذا موجودة
+                const wilayaSelect = document.getElementById("wilaya-select");
+                const selectedWilaya = wilayaSelect ? wilayaSelect.value : null;
+                const livraisonRadio = document.querySelector("input[name='type_livraison']:checked");
+                const selectedLivraison = livraisonRadio ? livraisonRadio.value : null;
+                if (selectedWilaya) body.append("wilaya", selectedWilaya);
+                if (selectedLivraison) body.append("type_livraison", selectedLivraison);
+
+                fetch("{% url 'remove_from_cart' 0 %}".replace("0", itemId), {
+                    method: "POST",
+                    headers: {
+                        "X-CSRFToken": getCookie("csrftoken"),
+                        "Content-Type": "application/x-www-form-urlencoded"
+                    },
+                    body: body.toString()
+                })
+                .then(res => res.json())
+                .then(data => {
+                    if (data.success) updateCarts(data, itemId);
+                })
+                .catch(err => console.error("❌ خطأ في الحذف:", err));
+            });
+        }
+    });
+}
+
+// تفعيل الزرار مرة واحدة فقط
+handleRemove(".remove-btn-sidebar");
+handleRemove(".btn-remove");
+</script>
+
+
+<script>
+document.getElementById('btn-confirmer').addEventListener('click', function (e) {
+    const communeSelect = document.getElementById('commune-select');
+    if (!communeSelect.value) {
+        e.preventDefault();
+        alert("❌ يرجى اختيار البلدية قبل تأكيد الطلب");
+        communeSelect.focus();
+        return false;
+    }
+});
+</script>
+<style>
+/* إخفاء أزرار زيادة/نقص افتراضية في input number */
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+input[type=number] {
+    -moz-appearance: textfield; /* لمتصفح Firefox */
+}
+</style>
+</body>
+</html>

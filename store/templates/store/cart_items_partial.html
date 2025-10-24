@@ -1,0 +1,186 @@
+{% load static %}
+
+
+
+
+{% for item in mini_panier_produits %}
+<li class="header-cart-item flex-w flex-t m-b-12">
+    <div class="header-cart-item-img" style="position: relative;">
+        {% with item.couleur.images.first as img %}
+            {% if img %}
+                <img src="{{ img.image.url }}" alt="{{ item.produit.nom }}">
+            {% else %}
+                <img src="{% static 'store/images/default.png' %}" alt="no image">
+            {% endif %}
+        {% endwith %}
+
+        <!-- زر الإزالة فوق الصورة -->
+       <button class="remove-btn-sidebar"
+        data-id="{{ item.id }}"
+        style="position:absolute; top:-5px; right:0px; padding:4px; border-radius:50%; color:red; z-index:999; background: transparent; border:none; cursor:pointer;">
+          <i class="fa fa-times"></i>
+        </button>
+
+
+    </div>
+
+    <div class="header-cart-item-txt p-t-8">
+        <a href="{% url 'product_detail' item.produit.id %}" class="header-cart-item-name m-b-18 hov-cl1 trans-04">
+            {{ item.produit.nom }} :  {{ item.couleur.couleur }}
+             |    {{ item.taille }}
+        </a>
+        <span class="header-cart-item-info">
+            {{ item.quantite }} × {{ item.produit.prix }} DA
+
+        </span>
+    </div>
+
+</li>
+{% empty %}
+    <li class="header-cart-item m-b-12">
+        <span class="stext-101 cl6">PANIER VIDE 🛒</span>
+    </li>
+
+{% endfor %}
+
+<!-- ✅ عرض المجموع -->
+{% if total_produits > 0 %}
+    <div class="header-cart-total w-full p-tb-20" style="text-align: center;">
+         TOTAL : <strong>{{ total_produits }} DA</strong>
+    </div>
+{% endif %}
+
+
+
+<div class="w-full">
+<!--					<div class="header-cart-total w-full p-tb-40">-->
+<!--						<ul class="header-cart-wrapitem w-full">-->
+<!--    						🧾 المجموع الكلي: {{ total|floatformat:2 }} DA-->
+<!--						</ul>-->
+<!--					</div>-->
+
+
+					<div class="header-cart-buttons flex-w w-full">
+						<a href="{% url 'panier' %}" class="flex-c-m stext-101 cl0 size-107 bg3 bor2 hov-btn3 p-lr-15 trans-04 m-r-8 m-b-10">
+							LANCER LA COMMANDE
+						</a>
+
+<!--						<a href="shoping-cart.html" class="flex-c-m stext-101 cl0 size-107 bg3 bor2 hov-btn3 p-lr-15 trans-04 m-b-10">-->
+<!--							Check Out-->
+<!--						</a>-->
+					</div>
+				</div>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    const cartBtn = document.querySelector(".js-show-cart");
+    const cartPanel = document.querySelector(".js-panel-cart");
+    const cartClose = document.querySelectorAll(".js-hide-cart");
+
+    if (cartBtn && cartPanel) {
+        cartBtn.addEventListener("click", function () {
+            cartPanel.classList.add("show-header-cart");
+        });
+    }
+
+    cartClose.forEach(btn => {
+        btn.addEventListener("click", function () {
+            cartPanel.classList.remove("show-header-cart");
+        });
+    });
+});
+</script>
+<script>
+function updateCarts(data, itemId = null) {
+    // ✅ إزالة العنصر من السلة الجانبية مباشرة
+    if (itemId) {
+        const li = document.querySelector(`.remove-btn-sidebar[data-id='${itemId}']`)?.closest(".header-cart-item");
+        if (li) li.remove();
+    }
+
+    // ✅ تحديث الرقم (badge)
+    const cartCount = document.querySelector(".icon-header-noti");
+    if (cartCount) {
+        cartCount.setAttribute("data-notify", data.count || 0);
+    }
+
+    // ✅ تحديث المجموع في السلة الجانبية
+    const totalDiv = document.querySelector(".header-cart-total strong");
+    if (totalDiv) totalDiv.textContent = data.total_produits + " DA";
+
+    // ✅ إذا السلة صارت فارغة
+    if (document.querySelectorAll(".header-cart-item-img").length === 0) {
+        const emptyMsg = document.createElement("li");
+        emptyMsg.className = "header-cart-item m-b-12";
+        emptyMsg.innerHTML = '<span class="stext-101 cl6">PANIER VIDE 🛒</span>';
+
+        document.querySelector(".header-cart-buttons")?.insertAdjacentElement("beforebegin", emptyMsg);
+        document.querySelector(".header-cart-total")?.remove();
+    }
+
+    // ✅ تحديث السلة الكاملة (صفحة panier)
+    if (document.getElementById("prix-produits")) {
+        document.getElementById("prix-produits").textContent = data.total_produits + " DA";
+        document.getElementById("total_final").textContent = data.total_final + " DA";
+        if (itemId) {
+            const row = document.querySelector(`.btn-remove[data-id='${itemId}']`)?.closest("tr");
+            if (row) row.remove();
+        }
+    }
+
+    // 🔑 إعادة تفعيل أزرار الحذف بعد أي تحديث
+    handleRemove(".remove-btn-sidebar");
+    handleRemove(".btn-remove");
+}
+
+// دالة لإضافة حدث الحذف لكل الأزرار مرة واحدة فقط
+function handleRemove(buttonSelector) {
+    document.querySelectorAll(buttonSelector).forEach(button => {
+        if (!button.dataset.listenerAdded) { // لمنع التكرار
+            button.dataset.listenerAdded = "true";
+
+            button.addEventListener("click", function(e) {
+                e.preventDefault();
+                if (!confirm("هل أنت متأكد أنك تريد إزالة هذا المنتج؟")) return;
+
+                const itemId = this.dataset.id;
+                const body = new URLSearchParams();
+
+                // إضافة معلومات التوصيل فقط للسلة الكاملة إذا موجودة
+                const wilayaSelect = document.getElementById("wilaya-select");
+                const selectedWilaya = wilayaSelect ? wilayaSelect.value : null;
+                const livraisonRadio = document.querySelector("input[name='type_livraison']:checked");
+                const selectedLivraison = livraisonRadio ? livraisonRadio.value : null;
+                if (selectedWilaya) body.append("wilaya", selectedWilaya);
+                if (selectedLivraison) body.append("type_livraison", selectedLivraison);
+
+                fetch("{% url 'remove_from_cart' 0 %}".replace("0", itemId), {
+                    method: "POST",
+                    headers: {
+                        "X-CSRFToken": getCookie("csrftoken"),
+                        "Content-Type": "application/x-www-form-urlencoded"
+                    },
+                    body: body.toString()
+                })
+                .then(res => res.json())
+                .then(data => {
+                    if (data.success) updateCarts(data, itemId);
+                })
+                .catch(err => console.error("❌ خطأ في الحذف:", err));
+            });
+        }
+    });
+}
+
+// ✅ تفعيل الأزرار عند تحميل الصفحة لأول مرة
+handleRemove(".remove-btn-sidebar");
+handleRemove(".btn-remove");
+</script>
+
+
+<style>
+    .header-cart-item-img::before,
+    .header-cart-item-img::after {
+        display: none !important;
+    }
+</style>

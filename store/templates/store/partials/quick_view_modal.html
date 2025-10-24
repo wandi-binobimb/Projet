@@ -1,0 +1,14 @@
+<div class="p-4">
+  <h4>{{ produit.nom }}</h4>
+  <div class="flex">
+    {% for couleur in couleurs %}
+      {% for img in couleur.images.all|slice:":1" %}
+        <img src="{{ img.image.url }}" style="width:100px;height:100px;object-fit:cover;">
+      {% endfor %}
+    {% endfor %}
+  </div>
+  <p>{{ produit.description }}</p>
+  <p><strong>{{ produit.prix }} DA</strong></p>
+
+  <button class="btn btn-primary">إضافة إلى السلة</button>
+</div>
