@@ -2745,7 +2745,7 @@ input.num-product::-webkit-inner-spin-button {
 }
 
 .bor16 {
-  border-left: 3px solid #e6e6e6;
+  border-right: 3px solid #e6e6e6;
 }
 
 .bor17 {
@@ -3390,3 +3390,4 @@ input.num-product::-webkit-inner-spin-button {
     background-color : #5a6ac9;
 
  }
+
