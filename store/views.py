@@ -8,7 +8,7 @@ from django.shortcuts import render, get_object_or_404
 from django.views.decorators.cache import never_cache
 from django.views.decorators.http import require_POST
 from openpyxl.styles.builtins import total
-from pkg_resources import require
+
 from django.contrib import messages
 from store.models import Produit, ProduitCouleur, ProduitImage, ProduitTaille, Client, Panier, Commande, Wilaya, Commune
 
