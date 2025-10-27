@@ -9,7 +9,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.environ.get('SECRET_KEY', 'django-insecure-placeholder')
 
 DEBUG = False
-ALLOWED_HOSTS = ['*']  # لاحقًا يمكنك وضع رابط موقعك على Render فقط
+
+ALLOWED_HOSTS = ['projet-z3f2.onrender.com', 'localhost', '127.0.0.1']
+
+
 
 # ----------------------
 # تطبيقات المشروع
@@ -91,7 +94,9 @@ USE_TZ = True
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [BASE_DIR / "static"]
 STATIC_ROOT = BASE_DIR / "staticfiles"
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'  # ✅ مثالي لـ Render
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedStaticFilesStorage'
+
+
 
 # ----------------------
 # ملفات media
