@@ -1,18 +1,19 @@
-
-
 import os
 from pathlib import Path
+from decouple import config
+import cloudinary
 
+# ----------------------
+# مسار المشروع
+# ----------------------
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-# مفتاح الأمان من بيئة Render
-SECRET_KEY = os.environ.get('SECRET_KEY', 'django-insecure-placeholder')
-
-DEBUG = False
-
+# ----------------------
+# إعدادات الأمان
+# ----------------------
+SECRET_KEY = config('SECRET_KEY', default='django-insecure-placeholder')
+DEBUG = config('DEBUG', default=False, cast=bool)
 ALLOWED_HOSTS = ['projet-z3f2.onrender.com', 'localhost', '127.0.0.1']
-
-
 
 # ----------------------
 # تطبيقات المشروع
@@ -24,8 +25,11 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
+    # Cloudinary
     'cloudinary',
     'cloudinary_storage',
+
     # تطبيقك
     'store',
 
@@ -38,7 +42,7 @@ INSTALLED_APPS = [
 # ----------------------
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware',  # ✅ ضروري لتقديم staticfiles على Render
+    'whitenoise.middleware.WhiteNoiseMiddleware',  # لتقديم static files على Render
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -88,6 +92,7 @@ LANGUAGE_CODE = 'en-us'
 TIME_ZONE = 'UTC'
 USE_I18N = True
 USE_TZ = True
+DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # ----------------------
 # ملفات static
@@ -95,9 +100,7 @@ USE_TZ = True
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [BASE_DIR / "static"]
 STATIC_ROOT = BASE_DIR / "staticfiles"
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedStaticFilesStorage'
-
-
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 # ----------------------
 # ملفات media
@@ -105,19 +108,25 @@ STATICFILES_STORAGE = 'whitenoise.storage.CompressedStaticFilesStorage'
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / "media"
 
-DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-
-
-import cloudinary
-import cloudinary.uploader
-import cloudinary.api
-
-
-
+# ----------------------
+# إعداد Cloudinary باستخدام .env
+# ----------------------
 cloudinary.config(
-  cloud_name = "dcssekkd5",
-  api_key = "671348262812769",
-  api_secret = "*********************************"
+    cloud_name = config('CLOUDINARY_CLOUD_NAME'),
+    api_key = config('CLOUDINARY_API_KEY'),
+    api_secret = config('CLOUDINARY_API_SECRET')
 )
 
 DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
+
+# ----------------------
+# نصائح للنشر على Render
+# ----------------------
+# 1. تأكد من أن لديك ملف requirements.txt يحتوي على:
+#    django, python-decouple, cloudinary, django-cloudinary-storage, whitenoise
+# 2. قبل رفع الموقع نفذ:
+#    python manage.py collectstatic --noinput
+#    ليتم تجهيز ملفات static للـ Render
+
+
+
