@@ -105,3 +105,18 @@ MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / "media"
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+import cloudinary
+import cloudinary.uploader
+import cloudinary.api
+
+INSTALLED_APPS += ['cloudinary', 'cloudinary_storage']
+
+cloudinary.config(
+  cloud_name = "dcssekkd5",
+  api_key = "671348262812769",
+  api_secret = "*********************************"
+)
+
+DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
