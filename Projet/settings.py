@@ -42,7 +42,7 @@ INSTALLED_APPS = [
 # ----------------------
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware',  # لتقديم static files على Render
+    'whitenoise.middleware.WhiteNoiseMiddleware',  # لتقديم ملفات static على Render
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -109,12 +109,10 @@ MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / "media"
 
 # ----------------------
-# إعداد Cloudinary باستخدام .env
+# إعداد Cloudinary باستخدام CLOUDINARY_URL
 # ----------------------
 cloudinary.config(
-    cloud_name = config('CLOUDINARY_CLOUD_NAME'),
-    api_key = config('CLOUDINARY_API_KEY'),
-    api_secret = config('CLOUDINARY_API_SECRET')
+    cloudinary_url=os.environ.get('CLOUDINARY_URL')
 )
 
 DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
@@ -122,11 +120,7 @@ DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 # ----------------------
 # نصائح للنشر على Render
 # ----------------------
-# 1. تأكد من أن لديك ملف requirements.txt يحتوي على:
-#    django, python-decouple, cloudinary, django-cloudinary-storage, whitenoise
-# 2. قبل رفع الموقع نفذ:
+# 1. تأكد من إضافة Environment Variable على Render:
+#    CLOUDINARY_URL=cloudinary://API_KEY:API_SECRET@CLOUD_NAME
+# 2. قبل رفع المشروع نفذ:
 #    python manage.py collectstatic --noinput
-#    ليتم تجهيز ملفات static للـ Render
-
-
-
