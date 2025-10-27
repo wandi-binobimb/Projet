@@ -24,7 +24,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-
+    'cloudinary',
+    'cloudinary_storage',
     # تطبيقك
     'store',
 
@@ -111,7 +112,7 @@ import cloudinary
 import cloudinary.uploader
 import cloudinary.api
 
-INSTALLED_APPS += ['cloudinary', 'cloudinary_storage']
+
 
 cloudinary.config(
   cloud_name = "dcssekkd5",
