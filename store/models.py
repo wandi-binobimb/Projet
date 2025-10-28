@@ -2,13 +2,12 @@ from django.core.exceptions import ValidationError
 from django.db import models
 from django.db.models import SET_NULL
 from django.utils.html import format_html
-from decimal import Decimal
-
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django.utils import timezone
 from decimal import Decimal
 from django.apps import apps  # تأكد أن المسار صحيح
+from cloudinary.models import CloudinaryField
 
 
 
@@ -76,7 +75,7 @@ class ProduitCouleur(models.Model):
 
 class ProduitImage(models.Model):
     couleur = models.ForeignKey(ProduitCouleur,on_delete=models.CASCADE,related_name='images')
-    image = models.ImageField(upload_to='produits/more_images/')
+    image = CloudinaryField('image')
 
     def __str__(self):
         return f"image de {self.couleur}"

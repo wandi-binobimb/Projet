@@ -4,7 +4,7 @@ from decouple import config
 import cloudinary
 
 # ----------------------
-# مسار المشروع
+# المسار الأساسي للمشروع
 # ----------------------
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -12,11 +12,11 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # إعدادات الأمان
 # ----------------------
 SECRET_KEY = config('SECRET_KEY', default='django-insecure-placeholder')
-DEBUG = config('DEBUG', default=False, cast=bool)
-ALLOWED_HOSTS = ['projet-z3f2.onrender.com', 'localhost', '127.0.0.1']
+DEBUG = True  # اجعله True فقط عند التجربة محلياً
+ALLOWED_HOSTS = ['*']
 
 # ----------------------
-# تطبيقات المشروع
+# التطبيقات المثبتة
 # ----------------------
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -26,7 +26,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
-    # Cloudinary
+    # مكتبات Cloudinary
     'cloudinary',
     'cloudinary_storage',
 
@@ -54,7 +54,7 @@ MIDDLEWARE = [
 ROOT_URLCONF = 'Projet.urls'
 
 # ----------------------
-# Templates
+# القوالب
 # ----------------------
 TEMPLATES = [
     {
@@ -86,16 +86,17 @@ DATABASES = {
 }
 
 # ----------------------
-# الإعدادات العامة
+# اللغة والمنطقة الزمنية
 # ----------------------
 LANGUAGE_CODE = 'en-us'
 TIME_ZONE = 'UTC'
 USE_I18N = True
 USE_TZ = True
+
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # ----------------------
-# ملفات static
+# ملفات STATIC
 # ----------------------
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [BASE_DIR / "static"]
@@ -103,24 +104,32 @@ STATIC_ROOT = BASE_DIR / "staticfiles"
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 # ----------------------
-# ملفات media
+# إعدادات MEDIA عبر Cloudinary
 # ----------------------
+DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 MEDIA_URL = '/media/'
-MEDIA_ROOT = BASE_DIR / "media"
 
 # ----------------------
-# إعداد Cloudinary باستخدام CLOUDINARY_URL
+# إعداد Cloudinary
 # ----------------------
 cloudinary.config(
-    cloudinary_url=os.environ.get('CLOUDINARY_URL')
+    cloudinary_url=config('CLOUDINARY_URL')
 )
 
-DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 
-# ----------------------
-# نصائح للنشر على Render
-# ----------------------
-# 1. تأكد من إضافة Environment Variable على Render:
-#    CLOUDINARY_URL=cloudinary://API_KEY:API_SECRET@CLOUD_NAME
-# 2. قبل رفع المشروع نفذ:
-#    python manage.py collectstatic --noinput
+import os
+from decouple import config
+import cloudinary
+import cloudinary.uploader
+import cloudinary.api
+
+# === إعداد Cloudinary ===
+cloudinary.config(
+    cloud_name="dcssekkd5",
+    api_key="671348262812769",
+    api_secret="WEgRFtuTs9WpIJkLgEtckj3HUSE"
+)
+
+# === إعداد ملفات الميديا ===
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
