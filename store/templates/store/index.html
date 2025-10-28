@@ -1502,6 +1502,7 @@ document.addEventListener("DOMContentLoaded", function () {
 			window.location.href = "/panier/"; // غيّر الرابط حسب مسار صفحة السلة عندك
 		  }
 		});
+		refreshCartSidebar();
 
 		// نضيف حدث للرابط بعد إنشاء الـ Swal
 		document.addEventListener("click", function (e) {
@@ -1765,6 +1766,16 @@ function attachRemoveButtons() {
 document.addEventListener("DOMContentLoaded", attachRemoveButtons);
 </script>
 
+// ✅ دالة لتحديث السلة الجانبية بدون إعادة تحميل الصفحة
+function refreshCartSidebar() {
+    fetch("/cart_items_partial/")
+        .then(response => response.json())
+        .then(data => {
+            document.querySelector(".header-cart-content").innerHTML = data.html;
+            document.querySelector(".js-show-cart").setAttribute("data-notify", data.count);
+        })
+        .catch(error => console.error("خطأ في تحديث السلة:", error));
+}
 
 </body>
 </html>

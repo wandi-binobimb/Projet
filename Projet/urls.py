@@ -37,6 +37,9 @@ urlpatterns = [
     path('admin/get_categorie_nom/', views.get_categorie_nom, name='get_categorie_nom'),
     path('get_tailles/<int:couleur_id>/', views.get_tailles, name='get_tailles'),
     path("quick-view/<int:produit_id>/", views.product_quick_view, name="product_quick_view"),
+    path('cart_items_partial/', views.cart_items_partial, name='cart_items_partial'),
+    path('mini_panier/', views.mini_panier, name='mini_panier'),
+
     path('produits/etiquette/<str:etiquette>/', views.produits_par_etiquette, name="produits_par_etiquette"),
 ]
 

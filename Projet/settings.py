@@ -12,7 +12,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # إعدادات الأمان
 # ----------------------
 SECRET_KEY = config('SECRET_KEY', default='django-insecure-placeholder')
-DEBUG = True  # اجعله True فقط عند التجربة محلياً
+DEBUG = False  # اجعله True فقط عند التجربة محلياً
 ALLOWED_HOSTS = ['*']
 
 # ----------------------

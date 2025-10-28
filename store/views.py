@@ -194,19 +194,31 @@ def ajouter_au_panier(request, produit_id):
 
 from django.template.loader import render_to_string
 from django.http import HttpResponse
+from django.template.loader import render_to_string
+from django.http import JsonResponse
 
 def cart_items_partial(request):
     panier = get_or_create_panier(request)
     cart_items = ProduitPanier.objects.filter(panier=panier)
 
+    # حساب المجموع الكلي
+    total = sum(item.produit.prix * item.quantite for item in cart_items)
 
+    # توليد HTML للقالب الجزئي للسلة الجانبية
+    html = render_to_string(
+        'store/partials/cart_items_partial.html',  # ⚠️ تأكد من مسار القالب الصحيح
+        {
+            'cart_items': cart_items,
+            'total': total,
+        },
+        request=request
+    )
 
-    html = render_to_string('store/cart_items_partial.html', {
-        'cart_items': cart_items,
-    } ,request=request)
-
-    return JsonResponse({'html': html, 'count': cart_items.count()})
-
+    return JsonResponse({
+        'html': html,
+        'count': cart_items.count(),
+        'total': total,
+    })
 
 
 
