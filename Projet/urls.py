@@ -10,6 +10,8 @@ from django.urls import path
 from django.conf import settings
 from django.conf.urls.static import static
 from store import views
+from django.http import HttpResponse
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -39,6 +41,8 @@ urlpatterns = [
     path("quick-view/<int:produit_id>/", views.product_quick_view, name="product_quick_view"),
     path('cart_items_partial/', views.cart_items_partial, name='cart_items_partial'),
     path('mini_panier/', views.mini_panier, name='mini_panier'),
+    path("ping/", lambda request: HttpResponse("pong")),
+
 
     path('produits/etiquette/<str:etiquette>/', views.produits_par_etiquette, name="produits_par_etiquette"),
 ]
