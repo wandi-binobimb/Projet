@@ -40,7 +40,6 @@ urlpatterns = [
     path('get_tailles/<int:couleur_id>/', views.get_tailles, name='get_tailles'),
     path("quick-view/<int:produit_id>/", views.product_quick_view, name="product_quick_view"),
     path('cart_items_partial/', views.cart_items_partial, name='cart_items_partial'),
-    path('mini_panier/', views.mini_panier, name='mini_panier'),
     path("ping/", lambda request: HttpResponse("pong")),
 
 
