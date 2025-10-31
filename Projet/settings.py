@@ -5,25 +5,21 @@ import dj_database_url
 import cloudinary
 
 # ======================
-# المسار الأساسي للمشروع
+# BASE DIR
 # ======================
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 # ======================
-# إعدادات الأمان
+# SECURITY
 # ======================
 SECRET_KEY = config('SECRET_KEY', default='django-insecure-placeholder')
-
-# ⚠️ أثناء النشر اجعلها False — لتجنب عرض الأخطاء
 DEBUG = config('DEBUG', default=False, cast=bool)
-
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ['projet-z3f2.onrender.com', 'localhost', '127.0.0.1']
 
 # ======================
-# التطبيقات المثبتة
+# APPLICATIONS
 # ======================
 INSTALLED_APPS = [
-    # Django apps
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -31,23 +27,21 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
-    # مكتبات Cloudinary
+    # Third-party
     'cloudinary',
     'cloudinary_storage',
-
-    # تطبيقك
-    'store',
-
-    # أدوات إضافية
     'django_extensions',
+
+    # Local
+    'store',  # غيّر حسب تطبيقك الرئيسي
 ]
 
 # ======================
-# Middleware
+# MIDDLEWARE
 # ======================
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware',  # ✅ ضروري لـ Render
+    'whitenoise.middleware.WhiteNoiseMiddleware',  # لتسريع الملفات الثابتة
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -59,7 +53,7 @@ MIDDLEWARE = [
 ROOT_URLCONF = 'Projet.urls'
 
 # ======================
-# القوالب
+# TEMPLATES
 # ======================
 TEMPLATES = [
     {
@@ -81,11 +75,8 @@ TEMPLATES = [
 WSGI_APPLICATION = 'Projet.wsgi.application'
 
 # ======================
-# قاعدة البيانات (Render/PostgreSQL أو SQLite)
+# DATABASE
 # ======================
-
-import dj_database_url
-
 DATABASES = {
     'default': dj_database_url.config(
         default=config('DATABASE_URL'),
@@ -95,33 +86,32 @@ DATABASES = {
 }
 
 # ======================
-# اللغة والمنطقة الزمنية
+# LANGUAGE & TIMEZONE
 # ======================
-LANGUAGE_CODE = 'en-us'
-TIME_ZONE = 'UTC'
+LANGUAGE_CODE = 'fr'
+TIME_ZONE = 'Africa/Algiers'
 USE_I18N = True
 USE_TZ = True
-
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # ======================
-# إعدادات STATIC (WhiteNoise)
+# STATIC & MEDIA
 # ======================
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [BASE_DIR / "static"]
 STATIC_ROOT = BASE_DIR / "staticfiles"
 
+# ⚡ WhiteNoise Settings
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+WHITENOISE_USE_FINDERS = True
+WHITENOISE_MAX_AGE = 31536000  # سنة كاملة Cache للملفات الثابتة
 
 # ======================
-# إعدادات MEDIA عبر Cloudinary
+# MEDIA (Cloudinary)
 # ======================
 DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 MEDIA_URL = '/media/'
 
-# ======================
-# إعداد Cloudinary
-# ======================
 cloudinary.config(
     cloud_name="dcssekkd5",
     api_key="671348262812769",
@@ -129,20 +119,25 @@ cloudinary.config(
 )
 
 # ======================
-# الكاش المحلي لتسريع الصفحات
+# CACHING ⚡ (تسريع الصفحات)
 # ======================
 CACHES = {
     'default': {
         'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
-        'LOCATION': 'unique-snowflake',
+        'LOCATION': 'ultra-fast-cache',
     }
 }
 
+SESSION_ENGINE = "django.contrib.sessions.backends.cached_db"
+
 # ======================
-# تحسين إضافي للأداء
+# SECURITY HEADERS
 # ======================
 SECURE_BROWSER_XSS_FILTER = True
 SECURE_CONTENT_TYPE_NOSNIFF = True
-SESSION_ENGINE = "django.contrib.sessions.backends.cached_db"
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
-WHITENOISE_USE_FINDERS = True
+# ======================
+# RENDER Specific
+# ======================
+CSRF_TRUSTED_ORIGINS = ['https://projet-z3f2.onrender.com']
