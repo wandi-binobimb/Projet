@@ -1,6 +1,7 @@
 import os
 from pathlib import Path
 from decouple import config
+import dj_database_url
 import cloudinary
 
 # ======================
@@ -12,7 +13,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # إعدادات الأمان
 # ======================
 SECRET_KEY = config('SECRET_KEY', default='django-insecure-placeholder')
-DEBUG = False  # اجعلها True أثناء التطوير فقط
+
+# ⚠️ أثناء النشر اجعلها False — لتجنب عرض الأخطاء
+DEBUG = config('DEBUG', default=False, cast=bool)
+
 ALLOWED_HOSTS = ['*']
 
 # ======================
@@ -43,7 +47,7 @@ INSTALLED_APPS = [
 # ======================
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware',  # ✅ لتسريع static files
+    'whitenoise.middleware.WhiteNoiseMiddleware',  # ✅ ضروري لـ Render
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -77,13 +81,13 @@ TEMPLATES = [
 WSGI_APPLICATION = 'Projet.wsgi.application'
 
 # ======================
-# قاعدة البيانات
+# قاعدة البيانات (Render/PostgreSQL أو SQLite)
 # ======================
+import dj_database_url
+import os
+
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
+    'default': dj_database_url.parse(os.environ.get('DATABASE_URL'))
 }
 
 # ======================
@@ -103,7 +107,6 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = [BASE_DIR / "static"]
 STATIC_ROOT = BASE_DIR / "staticfiles"
 
-# ⚡ لتسريع تحميل الملفات عبر ضغطها وتخزينها مؤقتًا
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 # ======================
