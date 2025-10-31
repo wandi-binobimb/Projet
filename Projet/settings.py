@@ -137,3 +137,5 @@ CACHES = {
 SECURE_BROWSER_XSS_FILTER = True
 SECURE_CONTENT_TYPE_NOSNIFF = True
 SESSION_ENGINE = "django.contrib.sessions.backends.cached_db"
+
+WHITENOISE_USE_FINDERS = True
