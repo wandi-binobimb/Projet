@@ -3,22 +3,23 @@ from pathlib import Path
 from decouple import config
 import cloudinary
 
-# ----------------------
+# ======================
 # المسار الأساسي للمشروع
-# ----------------------
+# ======================
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-# ----------------------
+# ======================
 # إعدادات الأمان
-# ----------------------
+# ======================
 SECRET_KEY = config('SECRET_KEY', default='django-insecure-placeholder')
-DEBUG = False  # اجعله True فقط عند التجربة محلياً
+DEBUG = False  # اجعلها True أثناء التطوير فقط
 ALLOWED_HOSTS = ['*']
 
-# ----------------------
+# ======================
 # التطبيقات المثبتة
-# ----------------------
+# ======================
 INSTALLED_APPS = [
+    # Django apps
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -37,12 +38,12 @@ INSTALLED_APPS = [
     'django_extensions',
 ]
 
-# ----------------------
+# ======================
 # Middleware
-# ----------------------
+# ======================
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware',  # لتقديم ملفات static على Render
+    'whitenoise.middleware.WhiteNoiseMiddleware',  # ✅ لتسريع static files
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -53,9 +54,9 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'Projet.urls'
 
-# ----------------------
+# ======================
 # القوالب
-# ----------------------
+# ======================
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
@@ -75,9 +76,9 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'Projet.wsgi.application'
 
-# ----------------------
+# ======================
 # قاعدة البيانات
-# ----------------------
+# ======================
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
@@ -85,9 +86,9 @@ DATABASES = {
     }
 }
 
-# ----------------------
+# ======================
 # اللغة والمنطقة الزمنية
-# ----------------------
+# ======================
 LANGUAGE_CODE = 'en-us'
 TIME_ZONE = 'UTC'
 USE_I18N = True
@@ -95,41 +96,44 @@ USE_TZ = True
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-# ----------------------
-# ملفات STATIC
-# ----------------------
+# ======================
+# إعدادات STATIC (WhiteNoise)
+# ======================
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [BASE_DIR / "static"]
 STATIC_ROOT = BASE_DIR / "staticfiles"
+
+# ⚡ لتسريع تحميل الملفات عبر ضغطها وتخزينها مؤقتًا
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
-# ----------------------
+# ======================
 # إعدادات MEDIA عبر Cloudinary
-# ----------------------
+# ======================
 DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 MEDIA_URL = '/media/'
 
-# ----------------------
+# ======================
 # إعداد Cloudinary
-# ----------------------
-cloudinary.config(
-    cloudinary_url=config('CLOUDINARY_URL')
-)
-
-
-import os
-from decouple import config
-import cloudinary
-import cloudinary.uploader
-import cloudinary.api
-
-# === إعداد Cloudinary ===
+# ======================
 cloudinary.config(
     cloud_name="dcssekkd5",
     api_key="671348262812769",
-    api_secret="WEgRFtuTs9WpIJkLgEtckj3HUSE"
+    api_secret="WEgRFtuTs9WpIJkLgEtckj3HUSE",
 )
 
-# === إعداد ملفات الميديا ===
-MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+# ======================
+# الكاش المحلي لتسريع الصفحات
+# ======================
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
+        'LOCATION': 'unique-snowflake',
+    }
+}
+
+# ======================
+# تحسين إضافي للأداء
+# ======================
+SECURE_BROWSER_XSS_FILTER = True
+SECURE_CONTENT_TYPE_NOSNIFF = True
+SESSION_ENGINE = "django.contrib.sessions.backends.cached_db"
