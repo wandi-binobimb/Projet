@@ -68,8 +68,8 @@ function getCookie(name) {
 										</div>
 									</td>
 
-									<td class="colum-2">{{ item.produit.categorie }} | {{ item.produit.nom }} <p>{{ item.taille}}</p><p>{{item.produit.prix|floatformat:0}} DA </p></td>
-									<td class="colum-3">  </td>
+									<td class="colum-2">{{ item.produit.categorie }} | {{ item.produit.nom }} <p>{{ item.taille}}</p></td>
+									<td class="colum-3">  {{item.produit.prix|floatformat:0}} DA </td>
 									<td class="column-4">
 									  <div style="display: flex; align-items: center; gap: 5px; justify-content: center;">
 										<button type="button" class="btn btn-light btn-decrease" data-id="{{ item.id }}">-</button>
