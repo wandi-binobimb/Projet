@@ -69,23 +69,24 @@ function getCookie(name) {
 									</td>
 
 									<td class="colum-2">{{ item.produit.categorie }} | {{ item.produit.nom }} <p>{{ item.taille}} </p><p> {{item.produit.prix|floatformat:0}} DA </p></td>
-									<td class="column-4" style="text-align: center;">
-									  <div style="display: flex; align-items: center; justify-content: center; gap: 5px;">
-										<button type="button" class="btn btn-light btn-decrease" data-id="{{ item.id }}">-</button>
+									<td class="column-4">
+										  <div style="display: flex; align-items: center; gap: 5px; justify-content: center;">
+											<button type="button" class="btn btn-light btn-decrease" data-id="{{ item.id }}">-</button>
 
-										<input type="number" class="quantity-input" data-id="{{ item.id }}"
-											   value="{{ item.quantite }}" min="1"
-											   style="width: 50px; text-align: center;">
+											<input type="number" class="quantity-input" data-id="{{ item.id }}"
+												   value="{{ item.quantite }}" min="1"
+												   style="width: 50px; text-align: center;">
 
-										<button type="button" class="btn btn-light btn-increase" data-id="{{ item.id }}">+</button>
-									  </div>
+											<button type="button" class="btn btn-light btn-increase" data-id="{{ item.id }}">+</button>
+										  </div>
 
-									  <!-- ✅ عرض السعر الإجمالي داخل نفس العمود -->
-									  <div style="margin-top: 5px; font-size: 14px; color: #333;">
-										{{ item.quantite }} × {{ item.produit.prix }} DA =
-										<strong>{{ item.quantite|floatformat:0|add:item.produit.prix|floatformat:0 }}</strong> DA
-									  </div>
-									</td>
+										  <!-- 🔹 نقل الجزء الخاص بالإجمالي من column-5 إلى هنا -->
+										  <div class="total-cell" style="margin-top: 8px; text-align: center;">
+											<span class="total"></span> DA
+											<span style="display: none;" class="prix">{{ item.produit.prix }}</span>
+											<span style="display: none;" class="quantite">{{ item.quantite }}</span>
+										  </div>
+										</td>
 
 
 									<td class="column-6">
