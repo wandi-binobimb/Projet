@@ -1306,80 +1306,76 @@ document.addEventListener("DOMContentLoaded", function () {
 
   document.querySelector(".close-modal").onclick = () => modal.style.display = "none";
 
-document.getElementById("ajouter-au-panier-modal").addEventListener("click", () => {
-  const taille = document.querySelector("input[name='taille']:checked")?.value;
-  const quantite = quantiteInput.value;
+  document.getElementById("ajouter-au-panier-modal").addEventListener("click", () => {
+    const taille = document.querySelector("input[name='taille']:checked")?.value;
+    const quantite = quantiteInput.value;
 
-  // ✅ فقط لو فيه مقاسات ولم يختر
-  if (hasTailles && !taille) {
-    return alert("يرجى اختيار المقاس");
-  }
-
-  fetch(`/ajouter-au-panier/${selectedProduitId}/`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/x-www-form-urlencoded",
-      "X-CSRFToken": getCookie("csrftoken")
-    },
-    body: new URLSearchParams({
-      couleur_id: selectedCouleurId,
-      taille: taille || "", // ✅ حتى لو فارغ يرسل
-      quantite: quantite
-    })
-  })
-  .then(res => res.json())
-  .then(data => {
-    if (data.success) {
-      modal.style.display = "none";
-      swal({
-        title: data.nom_produit,
-        text: "Produit ajouté au panier avec succès✅.",
-        icon: "success",
-        confirmButtonText: "OK"
-      });
-
-      // ✅ تحديث الرقم فوق أيقونة السلة فورًا (هاتف + كمبيوتر)
-      document.querySelectorAll(".icon-header-noti, .js-show-cart").forEach(el => {
-        el.setAttribute("data-notify", data.count || 0);
-      });
-
-      // ✅ ثم تحديث السايدبار
-      updateCartSidebar();
-      attachRemoveButtons();
-    } else {
-      alert("❌ خطأ: " + (data.error || "تعذر الإضافة"));
+    // ✅ فقط لو فيه مقاسات ولم يختر
+    if (hasTailles && !taille) {
+      return alert("يرجى اختيار المقاس");
     }
-  });
-});
 
-function updateCartSidebar() {
-  fetch("/cart_items_partial/")
+    fetch(`/ajouter-au-panier/${selectedProduitId}/`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded",
+        "X-CSRFToken": getCookie("csrftoken")
+      },
+      body: new URLSearchParams({
+        couleur_id: selectedCouleurId,
+        taille: taille || "", // ✅ حتى لو فارغ يرسل
+        quantite: quantite
+      })
+    })
     .then(res => res.json())
     .then(data => {
-      // ✅ تحديث الرقم فوق الأيقونة أيضًا بعد أي تحديث
-      document.querySelectorAll(".icon-header-noti, .js-show-cart").forEach(el => {
-        el.setAttribute("data-notify", data.count || 0);
-      });
+      if (data.success) {
+        modal.style.display = "none";
+        swal({
+        	title: data.nom_produit,
+        	text: "Produit ajouté au panier avec succès✅.",
+        	 icon: "success",
+        	 confirmButtonText:"OK"
+        	 });
 
-      const sidebar = document.getElementById("cart-sidebar-content");
-      if (sidebar && data.html) {
-        sidebar.innerHTML = data.html;
-        handleRemove(".remove-btn-sidebar");
-        handleRemove(".btn-remove");
+
+        updateCartSidebar();
         attachRemoveButtons();
+      } else {
+        alert("❌ خطأ: " + (data.error || "تعذر الإضافة"));
       }
-    })
-    .catch(err => {
-      console.error("🚫 Erreur panier", err);
     });
-}
+  });
 
-function getCookie(name) {
-  const value = `; ${document.cookie}`;
-  const parts = value.split(`; ${name}=`);
-  return parts.length === 2 ? parts.pop().split(';').shift() : '';
-}
+  function updateCartSidebar() {
+    fetch("/cart_items_partial/")
+      .then(res => res.json())
+      .then(data => {
+        const cartIcon = document.querySelector(".js-show-cart");
+        if (cartIcon) {
+          cartIcon.setAttribute("data-notify", data.count);
+        }
+        const sidebar = document.getElementById("cart-sidebar-content");
+        if (sidebar && data.html) {
+          sidebar.innerHTML = data.html;
+          	handleRemove(".remove-btn-sidebar");  // تحديث محتوى السلة تلقائيا
+			handleRemove(".btn-remove");
+          	attachRemoveButtons();
 
+        }
+      })
+      .catch(err => {
+        console.error("X error panier");
+      });
+  }
+
+  function getCookie(name) {
+    const value = `; ${document.cookie}`;
+    const parts = value.split(`; ${name}=`);
+    return parts.length === 2 ? parts.pop().split(';').shift() : '';
+  }
+});
+</script>
 
 
 
