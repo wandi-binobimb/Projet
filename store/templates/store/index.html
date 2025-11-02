@@ -1521,7 +1521,7 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   });
 
-	  function updateCartSidebar() {
+ function updateCartSidebar() {
     fetch("/cart_items_partial/")
       .then(res => res.json())
       .then(data => {
