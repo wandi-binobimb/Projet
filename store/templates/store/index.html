@@ -1521,40 +1521,30 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   });
 
-  function updateCartSidebar() {
-    fetch("/cart_items_partial/")
-      .then(res => res.json())
-      .then(data => {
-        const cartIcon = document.querySelector(".js-show-cart");
-        if (cartIcon) {
-          cartIcon.setAttribute("data-notify", data.count);
-        }
-			updateCartCountMobile(data.count);
+	  function updateCartSidebar() {
+	  fetch("/cart_items_partial/")
+		.then(res => res.json())
+		.then(data => {
 
-        const sidebar = document.getElementById("cart-sidebar-content");
-        if (sidebar && data.html) {
-          sidebar.innerHTML = data.html;
-          	handleRemove(".remove-btn-sidebar");  // تحديث محتوى السلة تلقائيا
+		  // ✅ تحديث جميع شارات السلة في الهاتف والكمبيوتر
+		  document.querySelectorAll("[data-notify]").forEach(el => {
+			el.setAttribute("data-notify", data.count);
+		  });
+
+		  const sidebar = document.getElementById("cart-sidebar-content");
+		  if (sidebar && data.html) {
+			sidebar.innerHTML = data.html;
+			handleRemove(".remove-btn-sidebar");
 			handleRemove(".btn-remove");
-          	attachRemoveButtons();
+			attachRemoveButtons();
+		  }
 
-        }
-      })
-      .catch(err => {
-        console.error("X error panier");
-      });
-  }
-
-
-
-	// ✅ تحديث عدد المنتجات في أيقونة الهاتف أيضًا
-	function updateCartCountMobile(count) {
-	  // أيقونة السلة في الهاتف
-	  const mobileCartIcon = document.querySelector(".icon-header-item[data-notify]");
-	  if (mobileCartIcon) {
-		mobileCartIcon.setAttribute("data-notify", count);
-	  }
+		})
+		.catch(err => {
+		  console.error("🚫 Erreur panier", err);
+		});
 	}
+
 
   function getCookie(name) {
     const value = `; ${document.cookie}`;
