@@ -8,23 +8,7 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 
-<!-- Meta Pixel Code -->
-<script>
-!function(f,b,e,v,n,t,s)
-{if(f.fbq)return;n=f.fbq=function(){n.callMethod?
-n.callMethod.apply(n,arguments):n.queue.push(arguments)};
-if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
-n.queue=[];t=b.createElement(e);t.async=!0;
-t.src=v;s=b.getElementsByTagName(e)[0];
-s.parentNode.insertBefore(t,s)}(window, document,'script',
-'https://connect.facebook.net/en_US/fbevents.js');
-fbq('init', '1399037662222351');
-fbq('track', 'PageView');
-</script>
-<noscript><img height="1" width="1" style="display:none"
-src="https://www.facebook.com/tr?id=1399037662222351&ev=PageView&noscript=1"
-/></noscript>
-<!-- End Meta Pixel Code -->
+
 
 
 <link rel="stylesheet" href="{% static 'store/fonts/iconic/css/material-design-iconic-font.min.css' %}">
@@ -1665,8 +1649,6 @@ document.addEventListener("DOMContentLoaded", function () {
                     });
 
                     updateCartSidebar();
-                    refreshMiniCart();
-
                 } else {
                     swal("❌ Échec", data.error || "حدث خطأ أثناء الإضافة", "error");
                 }
@@ -1965,27 +1947,6 @@ document.addEventListener("DOMContentLoaded", function () {
 }
 </style>
 
-<script>
-function refreshMiniCart() {
-    fetch("/cart_items_partial/")  // ✅ هذا هو المسار الصحيح
-        .then(response => response.json())
-        .then(data => {
-            const sidebar = document.getElementById("cart-sidebar-content");
-            if (sidebar && data.html) {
-                sidebar.innerHTML = data.html;
-            }
-
-            // تحديث عداد السلة (الرقم الصغير في الأيقونة)
-            const cartIcon = document.querySelector(".js-show-cart");
-            if (cartIcon) {
-                cartIcon.setAttribute("data-notify", data.count);
-            }
-
-            attachRemoveButtons(); // لإعادة تفعيل أزرار الحذف
-        })
-        .catch(err => console.error("❌ خطأ أثناء تحديث السلة:", err));
-}
-</script>
 
 </body>
 </html>
