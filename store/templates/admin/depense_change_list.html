@@ -1,0 +1,8 @@
+{% extends "admin/change_list.html" %}
+
+{% block result_list %}
+    {{ block.super }}
+<div style="margin:20px 0; padding:12px; background: #e8f5e9; border:1px solid #c8e6c9; border-radius:6px; font-weight:bold;">
+total :{{ total_depenses }} DA
+</div>
+{% endblock %}

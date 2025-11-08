@@ -54,8 +54,8 @@ function getCookie(name) {
 									<th class="column-1">PRODUITS</th>
 									<th class="column-2"></th>
 									<th class="column-3">PRIX</th>
-									<th class="column-4">QUANTITÉ</th>
-									<th class="column-5">TOTAL</th>
+									<th class="column-4"></th>
+									<th class="column-5"></th>
 									<th class="column-5"></th>
 								</tr>
 
@@ -86,27 +86,14 @@ function getCookie(name) {
 											<span style="display: none;" class="prix">{{ item.produit.prix }}</span>
 											<span style="display: none;" class="quantite">{{ item.quantite }}</span>
 										  </div>
-										<button type="button"
-											class="btn btn-danger btn-sm btn-remove"
-											data-id="{{ item.id }}"
-											style="
-												position: absolute;
-												top: 5px;
-												right: 5px;
-												border-radius: 50%;
-												width: 24px;
-												height: 24px;
-												padding: 0;
-												font-size: 14px;
-												line-height: 1;
-											">
-										×
-									</button>
+
 										</td>
 
 
 									<td class="column-6">
-
+									  <button type="button" class="btn btn-danger btn-sm btn-remove" data-id="{{ item.id }}" >
+										🗑️
+									  </button>
 									</td>
 
 

@@ -288,3 +288,23 @@ def update_stock_restante(sender, instance, **kwargs):
             produit.save()
 
 
+TYPE_CHOICES = [
+    ('achter_article', 'achter_article'),
+    ('sponsor', 'sponsor'),
+    ('emballage', 'emballage'),
+    ('autre', 'autre'),
+
+]
+class Depense(models.Model):
+    nom = models.CharField(max_length=100, verbose_name=" المصروف")
+    montant = models.DecimalField(max_digits=10, decimal_places=2, verbose_name="المبلغ (DA)")
+    date = models.DateField( verbose_name="التاريخ")
+    type = models.CharField(max_length=20, choices=TYPE_CHOICES, default='', verbose_name="نوع ")
+    note = models.TextField(blank=True, null=True, verbose_name="ملاحظات")
+
+    class Meta:
+        ordering = ['-date']
+        verbose_name = "المصاريف"
+        verbose_name_plural = "المصاريف "
+    def __str__(self):
+        return f"{self.nom} - {self.montant} DA"

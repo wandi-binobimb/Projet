@@ -482,6 +482,35 @@ class MessageContactAdmin(admin.ModelAdmin):
 
 
 
+from django.contrib import admin
+from django.db.models import Sum
+from .models import Depense
+
+@admin.register(Depense)
+class DepenseAdmin(admin.ModelAdmin):
+    list_display = ('date','nom', 'type', 'montant', 'note')
+    search_fields = ('nom',)
+    list_filter = ('date','type')
+
+    # نحدد قالب مخصص لقائمة التغيير (change list)
+    change_list_template = "admin/depense_change_list.html"
+
+    def changelist_view(self, request, extra_context=None):
+        # نأخذ الاستجابة العادية أولاً
+        response = super().changelist_view(request, extra_context=extra_context)
+
+        try:
+            # queryset الناتج من صفحة الـ changelist (يحترم الفلاتر)
+            qs = response.context_data['cl'].queryset
+            total = qs.aggregate(total=Sum('montant'))['total'] or 0
+            # نمرّر المتغيّر إلى قالب الـ admin
+            response.context_data['total_depenses'] = total
+        except Exception:
+            # إذا لم يتوفّر شيء (مثلاً خطأ)، لا نكسر الصفحة
+            response.context_data['total_depenses'] = 0
+
+        return response
+
 
 admin.site.register(Client)
 admin.site.register(MessageContact,MessageContactAdmin)
