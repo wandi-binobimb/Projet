@@ -60,51 +60,48 @@ function getCookie(name) {
 								</tr>
 
 							<tbody>
-							  {% for item in produits_panier %}
-							  <tr class="table_row">
-								<!-- 🖼️ العمود الأول: الصورة + الاسم -->
-								<td class="column-1" style="display: flex; align-items: center; gap: 10px;">
-								  <div class="how-itemcart1">
-									<img src="{{ item.couleur.images.first.image.url }}" alt="{{ item.produit.nom }}" style="width: 70px; height: 70px; object-fit: cover; border-radius: 8px;">
-								  </div>
-								  <div>
-									  
-									<strong>{{ item.produit.nom }}</strong><br>
-									<small>{{ item.produit.categorie }}</small>
-								  </div>
-								</td>
+								{% for item in produits_panier %}
+								<tr class="table_row">
+									<td class="colum-1">
+										<div class="how-itemcart1">
+											<img src="{{ item.couleur.images.first.image.url }}" alt="{{ item.produit.nom}}">
+										</div>
+									</td>
 
-								<!-- 📏 العمود الثاني: الحجم والسعر الفردي -->
-								<td class="column-2" style="text-align: center;">
-								  <p style="margin: 0;">المقاس: <strong>{{ item.taille }}</strong></p>
-								  <p style="margin: 0;">السعر: {{ item.produit.prix|floatformat:0 }} DA</p>
-								</td>
+									<td class="colum-2">{{ item.produit.categorie }} | {{ item.produit.nom }} <p>{{ item.taille}} </p><p> {{item.produit.prix|floatformat:0}} DA </p></td>
+									<td class="column-4">
+										  <div style="display: flex; align-items: center; gap: 5px; justify-content: center;">
+											<button type="button" class="btn btn-light btn-decrease" data-id="{{ item.id }}">-</button>
 
-								<!-- 🔢 العمود الثالث: أزرار الكمية والسعر الإجمالي -->
-								<td class="column-3" style="text-align: center;">
-								  <div style="display: flex; align-items: center; justify-content: center; gap: 5px;">
-									<button type="button" class="btn btn-light btn-decrease" data-id="{{ item.id }}">-</button>
-									<input type="number" class="quantity-input" data-id="{{ item.id }}" value="{{ item.quantite }}" min="1" style="width: 50px; text-align: center;">
-									<button type="button" class="btn btn-light btn-increase" data-id="{{ item.id }}">+</button>
-								  </div>
+											<input type="number" class="quantity-input" data-id="{{ item.id }}"
+												   value="{{ item.quantite }}" min="1"
+												   style="width: 50px; text-align: center;">
 
-								  <div class="mt-2">
-									<span class="total" style="font-weight: bold;"></span> DA
-									<span style="display: none;" class="prix">{{ item.produit.prix }}</span>
-									<span style="display: none;" class="quantite">{{ item.quantite }}</span>
-								  </div>
-								</td>
+											<button type="button" class="btn btn-light btn-increase" data-id="{{ item.id }}">+</button>
+										  </div>
 
-								<!-- 🗑️ العمود الرابع: زر الحذف -->
-								<td class="column-4" style="text-align: center;">
-								  <button type="button" class="btn btn-danger btn-sm btn-remove" data-id="{{ item.id }}">🗑️</button>
-								</td>
-							  </tr>
-							  {% empty %}
-							  <tr>
-								<td colspan="4" style="text-align: center;">السلة فارغة</td>
-							  </tr>
-							  {% endfor %}
+										  <!-- 🔹 نقل الجزء الخاص بالإجمالي من column-5 إلى هنا -->
+										  <div class="total-cell" style="margin-top: 8px; text-align: center;">
+											<span class="total"></span> DA
+											<span style="display: none;" class="prix">{{ item.produit.prix }}</span>
+											<span style="display: none;" class="quantite">{{ item.quantite }}</span>
+										  </div>
+										</td>
+
+
+									<td class="column-6">
+									  <button type="button" class="btn btn-danger btn-sm btn-remove" data-id="{{ item.id }}" >
+										🗑️
+									  </button>
+									</td>
+
+
+
+
+								</tr>
+								{%empty%}
+								<tr><td colspan="5">السلة فارغة</td></tr>
+								{% endfor %}
 							</tbody>
 
 
