@@ -86,9 +86,22 @@ function getCookie(name) {
 											<span style="display: none;" class="prix">{{ item.produit.prix }}</span>
 											<span style="display: none;" class="quantite">{{ item.quantite }}</span>
 										  </div>
-										<button type="button" class="btn btn-danger btn-sm btn-remove" data-id="{{ item.id }}" >
-										🗑️
-									  </button>
+										<button type="button"
+											class="btn btn-danger btn-sm btn-remove"
+											data-id="{{ item.id }}"
+											style="
+												position: absolute;
+												top: 5px;
+												right: 5px;
+												border-radius: 50%;
+												width: 24px;
+												height: 24px;
+												padding: 0;
+												font-size: 14px;
+												line-height: 1;
+											">
+										×
+									</button>
 										</td>
 
 
