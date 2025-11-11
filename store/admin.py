@@ -336,26 +336,27 @@ class CommandeAdmin(admin.ModelAdmin):
     def produits_commande(self, obj):
         lignes = []
         for i, item in enumerate(obj.panier.produits.all(), start=1):
-            categorie = item.produit.categorie.nom if item.produit.categorie else "بدون صنف"
             nom = item.produit.nom
             couleur_nom = item.couleur.couleur if item.couleur else "بدون لون"
-            couleur_code = item.couleur.code if hasattr(item.couleur,
-                                                        'code') and item.couleur.code else "#000"  # الكود اللوني
+            couleur_code = item.couleur.code if hasattr(item.couleur, 'code') and item.couleur.code else "#000"
             taille = item.taille if item.taille else "بدون مقاس"
             quantite = item.quantite
 
             ligne = format_html(
-                '<div style="margin-bottom:4px; font-size:14px;">'
-                '<span style="color:brown; font-weight:bold;">{}. </span>'
-                '<span style="color:#1a237e; font-weight:900;">{}</span>  '
-                '<span style="color:#1a237e;; font-weight:900;">{}</span> '
-                '<span style="font-weight:bold; color:{};">{}</span> '
-                '<span style="color:#555;">(<strong>{}</strong> | <strong>×{}</strong>)</span>'
+                '<div style="font-size:14px; white-space:nowrap; margin-bottom:3px;">'
+                '<span style="color:brown; font-weight:bold;">{}) </span>'
+                '<span style="color:#1a237e; font-weight:900;">{}</span>'  # الاسم
+                ' - '
+                '<span style="color:#1a237e; font-weight:900;">{}</span>'  # المقاس
+                ' / '
+                '<span style="font-weight:bold; color:{};">{}</span>'  # اللون
+                ' (×{})'
                 '</div>',
-                i, categorie, nom, couleur_code, couleur_nom, taille, quantite
+                i, nom, taille, couleur_code, couleur_nom, quantite
             )
 
             lignes.append(ligne)
+
         return format_html("".join(lignes))
 
     produits_commande.short_description = "المنتجات المطلوبة"
