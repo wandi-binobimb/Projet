@@ -1,31 +1,12 @@
 
-
 {% load static %}
 <html lang="en">
 <head>
 
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-
-	<!-- Meta Pixel Code -->
-<script>
-!function(f,b,e,v,n,t,s)
-{if(f.fbq)return;n=f.fbq=function(){n.callMethod?
-n.callMethod.apply(n,arguments):n.queue.push(arguments)};
-if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
-n.queue=[];t=b.createElement(e);t.async=!0;
-t.src=v;s=b.getElementsByTagName(e)[0];
-s.parentNode.insertBefore(t,s)}(window, document,'script',
-'https://connect.facebook.net/en_US/fbevents.js');
-fbq('init', '1399037662222351');
-fbq('track', 'PageView');
-</script>
-<noscript><img height="1" width="1" style="display:none"
-src="https://www.facebook.com/tr?id=1399037662222351&ev=PageView&noscript=1"
-/></noscript>
-<!-- End Meta Pixel Code -->
 <!--===============================================================================================-->
-	<link rel="icon" href="{% static 'store/images/icons/favicon_1.png' %}" type="image/png">
+	<link rel="icon" type="image/png" href=" {%static 'store/images/icons/favicon.png' %}"/>
 <!--===============================================================================================-->
 	<link rel="stylesheet" type="text/css" href="{%static 'store/vendor/bootstrap/css/bootstrap.min.css' %}">
 <!--===============================================================================================-->
@@ -126,27 +107,27 @@ src="https://www.facebook.com/tr?id=1399037662222351&ev=PageView&noscript=1"
 			<!-- Topbar -->
 			<div class="top-bar">
 				<div class="content-topbar flex-sb-m h-full container">
-<!--					<div class="left-top-bar">-->
-<!--						Free shipping for standard order over $100-->
-<!--					</div>-->
+					<div class="left-top-bar">
+						Free shipping for standard order over $100
+					</div>
 
-<!--					<div class="right-top-bar flex-w h-full">-->
-<!--						<a href="#" class="flex-c-m trans-04 p-lr-25">-->
-<!--							Help & FAQs-->
-<!--						</a>-->
+					<div class="right-top-bar flex-w h-full">
+						<a href="#" class="flex-c-m trans-04 p-lr-25">
+							Help & FAQs
+						</a>
 
-<!--						<a href="#" class="flex-c-m trans-04 p-lr-25">-->
-<!--							My Account-->
-<!--						</a>-->
+						<a href="#" class="flex-c-m trans-04 p-lr-25">
+							My Account
+						</a>
 
-<!--						<a href="#" class="flex-c-m trans-04 p-lr-25">-->
-<!--							EN-->
-<!--						</a>-->
+						<a href="#" class="flex-c-m trans-04 p-lr-25">
+							EN
+						</a>
 
-<!--						<a href="#" class="flex-c-m trans-04 p-lr-25">-->
-<!--							USD-->
-<!--						</a>-->
-<!--					</div>-->
+						<a href="#" class="flex-c-m trans-04 p-lr-25">
+							USD
+						</a>
+					</div>
 				</div>
 			</div>
 
@@ -171,7 +152,7 @@ src="https://www.facebook.com/tr?id=1399037662222351&ev=PageView&noscript=1"
 							</li>
 
 							<li >
-								<a href="{% url 'panier' %}">Mon Panier</a>
+								<a href="{% url 'shoping_cart' %}">Mon Panier</a>
 							</li>
 
 
@@ -236,33 +217,33 @@ src="https://www.facebook.com/tr?id=1399037662222351&ev=PageView&noscript=1"
 
 		<!-- Menu Mobile -->
 		<div class="menu-mobile">
-<!--			<ul class="topbar-mobile">-->
-<!--				<li>-->
-<!--&lt;!&ndash;					<div class="left-top-bar">&ndash;&gt;-->
-<!--&lt;!&ndash;						Free shipping for standard order over $100&ndash;&gt;-->
-<!--&lt;!&ndash;					</div>&ndash;&gt;-->
-<!--				</li>-->
+			<ul class="topbar-mobile">
+				<li>
+					<div class="left-top-bar">
+						Free shipping for standard order over $100
+					</div>
+				</li>
 
-<!--&lt;!&ndash;				<li>&ndash;&gt;-->
-<!--&lt;!&ndash;					<div class="right-top-bar flex-w h-full">&ndash;&gt;-->
-<!--&lt;!&ndash;						<a href="#" class="flex-c-m p-lr-10 trans-04">&ndash;&gt;-->
-<!--&lt;!&ndash;							Help & FAQs&ndash;&gt;-->
-<!--&lt;!&ndash;						</a>&ndash;&gt;-->
+				<li>
+					<div class="right-top-bar flex-w h-full">
+						<a href="#" class="flex-c-m p-lr-10 trans-04">
+							Help & FAQs
+						</a>
 
-<!--&lt;!&ndash;						<a href="#" class="flex-c-m p-lr-10 trans-04">&ndash;&gt;-->
-<!--&lt;!&ndash;							My Account&ndash;&gt;-->
-<!--&lt;!&ndash;						</a>&ndash;&gt;-->
+						<a href="#" class="flex-c-m p-lr-10 trans-04">
+							My Account
+						</a>
 
-<!--&lt;!&ndash;						<a href="#" class="flex-c-m p-lr-10 trans-04">&ndash;&gt;-->
-<!--&lt;!&ndash;							EN&ndash;&gt;-->
-<!--&lt;!&ndash;						</a>&ndash;&gt;-->
+						<a href="#" class="flex-c-m p-lr-10 trans-04">
+							EN
+						</a>
 
-<!--&lt;!&ndash;						<a href="#" class="flex-c-m p-lr-10 trans-04">&ndash;&gt;-->
-<!--&lt;!&ndash;							USD&ndash;&gt;-->
-<!--&lt;!&ndash;						</a>&ndash;&gt;-->
-<!--&lt;!&ndash;					</div>&ndash;&gt;-->
-<!--&lt;!&ndash;				</li>&ndash;&gt;-->
-<!--			</ul>-->
+						<a href="#" class="flex-c-m p-lr-10 trans-04">
+							USD
+						</a>
+					</div>
+				</li>
+			</ul>
 
 			<ul class="main-menu-m">
 <!--				<li>-->
@@ -429,6 +410,16 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 });
 </script>
+
+
+
+
+
+
+
+
+
+
 
 <script>
   // ✅ إصلاح مشكلة الرجوع في الهاتف
