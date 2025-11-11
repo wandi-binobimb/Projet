@@ -430,5 +430,14 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 </script>
 
+<script>
+  // ✅ إصلاح مشكلة الرجوع في الهاتف
+  window.addEventListener("pageshow", function (event) {
+    if (event.persisted) {
+      // إذا كانت الصفحة من الكاش، نعيد تحميلها فوراً
+      window.location.reload();
+    }
+  });
+</script>
 
 </body>
