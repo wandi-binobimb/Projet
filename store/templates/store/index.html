@@ -1724,37 +1724,43 @@ function attachRemoveButtons() {
                     body: ""
                 })
                 .then(res => res.json())
-                .then(data => {
-                    if (data.success) {
-						// ✅ تحديث الرقم فوق أيقونة السلة فوراً بدون تحديث الصفحة
-						const cartIcon = document.querySelector(".icon-header-item[data-notify]");
-						if (cartIcon) {
-						  const current = parseInt(cartIcon.getAttribute("data-notify")) || 0;
-						  cartIcon.setAttribute("data-notify", current + parseInt(quantite));
-						}
+.then(data => {
+    if (data.success) {
+        // ✅ تحديث الرقم فوق أيقونة السلة فورًا
+        const cartIcon = document.querySelector(".icon-header-item[data-notify]");
+        if (cartIcon) {
+            const current = parseInt(cartIcon.getAttribute("data-notify")) || 0;
+            cartIcon.setAttribute("data-notify", current + parseInt(quantite));
+        }
 
-                        // ✅ تحديث العدد في أيقونة السلة
-                        const cartIcon = document.querySelector(".js-show-cart");
-                        if (cartIcon) {
-                            cartIcon.setAttribute("data-notify", data.count);
-                        }
+        // ✅ تحديث السلة الجانبية من السيرفر
+        fetch("/cart_items_partial/")
+            .then(res => res.json())
+            .then(sideData => {
+                // تحديث الرقم
+                document.querySelectorAll("[data-notify]").forEach(el => {
+                    el.setAttribute("data-notify", sideData.count);
+                });
 
-                        // ✅ تحديث محتوى السلة الجانبية
-                        fetch("{% url 'cart_items_partial' %}")
-                            .then(res => res.text())
-                            .then(html => {
-                                document.getElementById("mini-cart-items").innerHTML = html;
-                                attachRemoveButtons(); // إعادة ربط الأزرار
-                            });
+                // تحديث محتوى السلة الجانبية
+                const sidebar = document.getElementById("mini-cart-items");
+                if (sidebar && sideData.html) {
+                    sidebar.innerHTML = sideData.html;
+                }
 
-                        // ✅ تحديث المجموع
-                        const total = document.getElementById("mini-cart-total");
-                        if (total) {
-                            total.querySelector("strong").textContent = data.total_produits + " DA";
-                        }
-                    }
-                })
-                .catch(err => console.error("❌ خطأ في الحذف:", err));
+                // تحديث المجموع
+                const total = document.getElementById("mini-cart-total");
+                if (total) {
+                    total.querySelector("strong").textContent = sideData.total + " DA";
+                }
+
+                // إعادة تفعيل أزرار الحذف
+                attachRemoveButtons();
+            });
+    }
+})
+.catch(err => console.error("❌ خطأ في الحذف:", err));
+
             });
         }
     });
