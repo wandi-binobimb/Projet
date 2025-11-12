@@ -503,32 +503,16 @@
 										{{ couleur.produit.get_etiquette_display }}
 									</span>
 									{% endif %}
-						<div class="multiple-slider ">
-						{% for img in couleur.images.all|slice:":3" %}
-							<div>
-								<img src="{{ img.image.url }}" alt="{{ couleur.produit.nom }}" style="width:100%; height:400px; object-fit:cover;">
-
-								<!-- ✅ عدد المشاهدات في الزاوية -->
-								<div class="vue-counter" style="
-									position: absolute;
-									bottom: 8px;
-									right: 8px;
-									background-color: rgba(0, 0, 0, 0.6);
-									color: white;
-									padding: 3px 8px;
-									border-radius: 12px;
-									font-size: 13px;
-									z-index: 99;">
-
-									<span class="views" data-vues="{{ couleur.produit.vues }}">👁️ <span class="vues-format">0</span> </span>
-								</div>
-								<a href="{% url 'product_detail' couleur.produit.id %}?couleur_id={{ couleur.id }}" class="block2-btn flex-c-m stext-103 cl2 size-102 bg0 bor2 hov-btn1 p-lr-15 trans-04 quick-view-btn" data-url="{% url 'product_detail' couleur.produit.id %}?couleur_id={{ couleur.id }}">
-									COMMANDER
-								</a>
-
+						<div class="multiple-slider row g-1"> <!-- row مع g-1 لتقليل المسافات -->
+						  {% for img in couleur.images.all|slice:":4" %}
+							<div class="col-6 col-sm-6 col-md-4 col-lg-3"> <!-- responsive: 2-2-3-4 -->
+							  <img src="{{ img.image.url }}" alt="{{ couleur.produit.nom }}"
+								   class="img-fluid rounded"
+								   style="width:100%; height:200px; object-fit:cover;">
 							</div>
-						{% endfor %}
-					</div>
+						  {% endfor %}
+						</div>
+
 						</div>
 
 
@@ -1724,43 +1708,37 @@ function attachRemoveButtons() {
                     body: ""
                 })
                 .then(res => res.json())
-.then(data => {
-    if (data.success) {
-        // ✅ تحديث الرقم فوق أيقونة السلة فورًا
-        const cartIcon = document.querySelector(".icon-header-item[data-notify]");
-        if (cartIcon) {
-            const current = parseInt(cartIcon.getAttribute("data-notify")) || 0;
-            cartIcon.setAttribute("data-notify", current + parseInt(quantite));
-        }
+                .then(data => {
+                    if (data.success) {
+						// ✅ تحديث الرقم فوق أيقونة السلة فوراً بدون تحديث الصفحة
+						const cartIcon = document.querySelector(".icon-header-item[data-notify]");
+						if (cartIcon) {
+						  const current = parseInt(cartIcon.getAttribute("data-notify")) || 0;
+						  cartIcon.setAttribute("data-notify", current + parseInt(quantite));
+						}
 
-        // ✅ تحديث السلة الجانبية من السيرفر
-        fetch("/cart_items_partial/")
-            .then(res => res.json())
-            .then(sideData => {
-                // تحديث الرقم
-                document.querySelectorAll("[data-notify]").forEach(el => {
-                    el.setAttribute("data-notify", sideData.count);
-                });
+                        // ✅ تحديث العدد في أيقونة السلة
+                        const cartIcon = document.querySelector(".js-show-cart");
+                        if (cartIcon) {
+                            cartIcon.setAttribute("data-notify", data.count);
+                        }
 
-                // تحديث محتوى السلة الجانبية
-                const sidebar = document.getElementById("mini-cart-items");
-                if (sidebar && sideData.html) {
-                    sidebar.innerHTML = sideData.html;
-                }
+                        // ✅ تحديث محتوى السلة الجانبية
+                        fetch("{% url 'cart_items_partial' %}")
+                            .then(res => res.text())
+                            .then(html => {
+                                document.getElementById("mini-cart-items").innerHTML = html;
+                                attachRemoveButtons(); // إعادة ربط الأزرار
+                            });
 
-                // تحديث المجموع
-                const total = document.getElementById("mini-cart-total");
-                if (total) {
-                    total.querySelector("strong").textContent = sideData.total + " DA";
-                }
-
-                // إعادة تفعيل أزرار الحذف
-                attachRemoveButtons();
-            });
-    }
-})
-.catch(err => console.error("❌ خطأ في الحذف:", err));
-
+                        // ✅ تحديث المجموع
+                        const total = document.getElementById("mini-cart-total");
+                        if (total) {
+                            total.querySelector("strong").textContent = data.total_produits + " DA";
+                        }
+                    }
+                })
+                .catch(err => console.error("❌ خطأ في الحذف:", err));
             });
         }
     });
