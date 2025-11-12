@@ -19,13 +19,13 @@
 	<link rel="stylesheet" type="text/css" href="{%static 'store/fonts/linearicons-v1.0.0/icon-font.min.css' %}">
 <!--===============================================================================================-->
 	<link rel="stylesheet" type="text/css" href="{%static 'store/vendor/animate/animate.css' %}">
-<!--===============================================================================================-->	
+<!--===============================================================================================-->
 	<link rel="stylesheet" type="text/css" href="{%static 'store/vendor/css-hamburgers/hamburgers.min.css' %}">
 <!--===============================================================================================-->
 	<link rel="stylesheet" type="text/css" href="{%static 'store/vendor/animsition/css/animsition.min.css' %}">
 <!--===============================================================================================-->
 	<link rel="stylesheet" type="text/css" href="{%static 'store/vendor/select2/select2.min.css' %}">
-<!--===============================================================================================-->	
+<!--===============================================================================================-->
 	<link rel="stylesheet" type="text/css" href="{%static 'store/vendor/daterangepicker/daterangepicker.css' %}">
 <!--===============================================================================================-->
 	<link rel="stylesheet" type="text/css" href="{%static 'store/vendor/slick/slick.css' %}">
@@ -74,13 +74,13 @@
 									Collection Femme 2025
 								</span>
 							</div>
-								
+
 							<div class="layer-slick1 animated visible-false" data-appear="fadeInUp" data-delay="800">
 								<h2 class="ltext-201 cl2 p-t-19 p-b-43 respon1">
 									NOUVELLE SAISON
 								</h2>
 							</div>
-								
+
 							<div class="layer-slick1 animated visible-false" data-appear="zoomIn" data-delay="1600">
 								<a href="product.html" class="flex-c-m stext-101 cl0 size-101 bg1 bor1 hov-btn1 p-lr-15 trans-04">
 									Commander maintenant
@@ -98,13 +98,13 @@
 									Femme Nouvelle -Collection
 								</span>
 							</div>
-								
+
 							<div class="layer-slick1 animated visible-false" data-appear="lightSpeedIn" data-delay="800">
 								<h2 class="ltext-201 cl2 p-t-19 p-b-43 respon1">
 									Chaussures & Sacs
 								</h2>
 							</div>
-								
+
 							<div class="layer-slick1 animated visible-false" data-appear="slideInUp" data-delay="1600">
 								<a href="product.html" class="flex-c-m stext-101 cl0 size-101 bg1 bor1 hov-btn1 p-lr-15 trans-04">
 									Commander maintenant
@@ -122,13 +122,13 @@
 									Femme Collection 2025
 								</span>
 							</div>
-								
+
 							<div class="layer-slick1 animated visible-false" data-appear="rotateInUpRight" data-delay="800">
 								<h2 class="ltext-201 cl2 p-t-19 p-b-43 respon1">
 									NOUVEAUTE
 								</h2>
 							</div>
-								
+
 							<div class="layer-slick1 animated visible-false" data-appear="rotateIn" data-delay="1600">
 								<a href="product.html" class="flex-c-m stext-101 cl0 size-101 bg1 bor1 hov-btn1 p-lr-15 trans-04">
 									Commander maintenant
@@ -296,7 +296,7 @@
 
 
 
-					</div>	
+					</div>
 				</div>
 
 				<!-- Filter -->
@@ -1726,6 +1726,12 @@ function attachRemoveButtons() {
                 .then(res => res.json())
                 .then(data => {
                     if (data.success) {
+						// ✅ تحديث الرقم فوق الأيقونة مباشرة بدون انتظار الرد من السيرفر
+					const badge = document.querySelector("[data-notify]");
+					if (badge) {
+					  const current = parseInt(badge.getAttribute("data-notify")) || 0;
+					  badge.setAttribute("data-notify", current + parseInt(quantite));
+}
 
                         // ✅ تحديث العدد في أيقونة السلة
                         const cartIcon = document.querySelector(".js-show-cart");
