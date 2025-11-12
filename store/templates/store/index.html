@@ -1726,12 +1726,12 @@ function attachRemoveButtons() {
                 .then(res => res.json())
                 .then(data => {
                     if (data.success) {
-						// ✅ تحديث الرقم فوق الأيقونة مباشرة بدون انتظار الرد من السيرفر
-					const badge = document.querySelector("[data-notify]");
-					if (badge) {
-					  const current = parseInt(badge.getAttribute("data-notify")) || 0;
-					  badge.setAttribute("data-notify", current + parseInt(quantite));
-}
+						// ✅ تحديث الرقم فوق أيقونة السلة فوراً بدون تحديث الصفحة
+						const cartIcon = document.querySelector(".icon-header-item[data-notify]");
+						if (cartIcon) {
+						  const current = parseInt(cartIcon.getAttribute("data-notify")) || 0;
+						  cartIcon.setAttribute("data-notify", current + parseInt(quantite));
+						}
 
                         // ✅ تحديث العدد في أيقونة السلة
                         const cartIcon = document.querySelector(".js-show-cart");
